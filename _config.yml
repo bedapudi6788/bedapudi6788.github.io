@@ -1,16 +1,15 @@
 # Site settings
-title: portfolYOU
+title: Praneeth's personal site
 description: >- # this means to ignore newlines until "baseurl:"
-  Always code as if the guy who ends up maintaining your code
-  will be a violent psychopath who knows where you live.
+  Hello! My name is Bedapudi Praneeth and I currently work as a Sr. Data Scientist at DeepAffects.
 baseurl: ""  # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
-repository: YoussefRaafatNasry/portfolYOU
+repository: bedapudi6788/portfolYOU
 
 
 # Build settings
 markdown: kramdown
-remote_theme: YoussefRaafatNasry/portfolYOU
+remote_theme: bedapudi6788/portfolYOU
 
 # plugins:
 # - jekyll-feed
@@ -18,13 +17,12 @@ remote_theme: YoussefRaafatNasry/portfolYOU
 
 # Author Info
 author:
-  name     : John Doe
-  image    : https://i2.cdn.turner.com/cnnnext/dam/assets/140926165711-john-sutter-profile-image-large-169.jpg
-  email    : username@xyz.com
-  github   : username
-  twitter  : username
-  linkedin : username
-  facebook : username
+  name     : Bedapudi Praneeth
+  image    : https://avatars3.githubusercontent.com/u/15898654?s=460&v=4
+  email    : praneethbedapudi@gmail.com
+  github   : bedapudi6788
+  linkedin : bedapudi-praneeth
+  medium : praneethbedapudi
 
 
 # Collections
