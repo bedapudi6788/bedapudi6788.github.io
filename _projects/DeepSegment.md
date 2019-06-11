@@ -1,7 +1,7 @@
 ---
 name: DeepSegment
 tools: [Tensorflow, LSTM, Python]
-image: https://thenextscoop.com/wp-content/uploads/2019/01/web-design-2019.jpg
+image: https://cdn-images-1.medium.com/max/800/1*jKsNbSK7_7xGWLVOyLjMew.png
 description: Designed keeping ASR outputs in mind, DeepSegment uses BiLSTM + CRF for automatic sentence boundary detection. It significantly outperforms the standard libraries (spacy, nltk, corenlp ..) on imperfect text and performs similarly for perfectly punctuated text.
 ---
 
