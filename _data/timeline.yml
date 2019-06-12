@@ -1,22 +1,25 @@
 - title: Student, IIT Guwahati
   from: 2013
   to: 2017
-  description: Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-               sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-               Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-               nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-               reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+  description: Graduated from IIT Guwahati, Computer Science and Engineering department in 2017 (B.tech). <br> My BTP was on Verification of Contract Refinement using Othello Contract Refinement and Analysis uner Prof. Purandar Bhaduri. 
 
 - title: Software Developer Internship, Innoplexus, Pune
   from: 2016 May
   to: 2016 July
-  description: 1. Setted up ElasticSearch (2.3) production cluster along with ES Shield and Graylog. <br> 2. Wrote high performance modules for data migration from MongoDB to ElasticSearch and Neo4j. (Increased performance of existing modules by a factor of 50-60)  3.aa
+  description: 1. Setted up ElasticSearch (2.3) production cluster along with ES Shield and Graylog. <br> 2. Wrote high performance modules for data migration from MongoDB to ElasticSearch and Neo4j. (Increased performance of existing modules by a factor of 50-60) <br> 3. Implemented naive spell correction and query auto completion for various fields using ElasticSearch.
 
 - title: Junior Research Associate, Abzooba, Pune
-  from: 2017 May
+  from: 2017 July
+  to: 2018 July
+  description: 1. Implemented graph db to enhance the accuracy and performance of Abzooba's propitiatory NLU engine. <br> 2. Implemented deep learning (LSTM) based models for a significant change in the performance and F1 scores of our Entity Extraction and Text Classification engines. <br> 3. Explored new state of art methods and implemented them in various projects to decrease the work load of AI trainers and increase accuracy significantly of our predictions with less data. <br> 4. Created a single interface for showcasing our various NLP capabilities where with a single click the data is trained on different models and results can be viewed. Implemented dynamic loading of trained deep learning models. <br> 5. Worked on the NLP and NLU part of various chatbots, which offer various functionality like clothing suggestions, natural language text to MySQL converters etc.
+
+- title: Deep Learning engineer, Reckonsys Tech Labs, Bengaluru
+  from: 2018 August
+  to: 2019 May
+  description: 1. Built data extraction modules for various highly domain specific, large contracts that can even deal with nosy text (result of OCR). <br> 2. Built document categorization system that can automatically categorize and rename hundreds of different types of large documents and is extremely fast. <br> 3. Built a NLP module to extract and cross verifies extremely sensitive information from multiple legal documents and reports the anomalies. <br> 4.  Built a named entity recognition system using different machine learning and NLP techniques for highly domain specific data, which can work with very low amount of training data. <br> 5. Designed and built a novel algorithm using manchine-learning, that can extract structured data from hundreds of different types of tables like multi-line cells, cells separated only by a single space etc. 
+
+ - title: Senior Data Scientist, DeepAffects, Pune
+  from: 2019 May
   to: present
-  description: Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-               sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-               Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-               nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-               reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+  description: ///
+ 
