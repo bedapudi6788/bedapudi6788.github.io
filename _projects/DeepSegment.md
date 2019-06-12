@@ -1,7 +1,7 @@
 ---
 name: DeepSegment
 tools: [Tensorflow, LSTM, Python]
-image: https://raw.githubusercontent.com/bedapudi6788/bedapudi6788.github.io/master/images/deepsegment_accuracy.png
+image: /images/deepsegment_accuracy.png
 description: Designed with ASR outputs in mind, DeepSegment uses BiLSTM + CRF for automatic sentence boundary detection. It significantly outperforms the standard libraries (spacy, nltk, corenlp ..) on imperfect text and performs similarly for perfectly punctuated text.
 ---
 
@@ -19,13 +19,13 @@ Designed with ASR outputs in mind, DeepSegment uses BiLSTM + CRF for automatic s
 
 For the completely unpunctuated test case, the absolute accuracy is 52.637 and the F1 score is 91.33 (precision: 93.242, recall: 89.506).
 
-![](https://raw.githubusercontent.com/bedapudi6788/bedapudi6788.github.io/master/images/deepsegment_accuracy.png)
+![](/images/deepsegment_accuracy.png)
 
 
 
 <!-- DeepSegment (slightly modified version) performance on English and French tasks of FinSBD 2019 
 
-![](https://raw.githubusercontent.com/bedapudi6788/bedapudi6788.github.io/master/images/finnlp_eng.png) ![](https://raw.githubusercontent.com/bedapudi6788/bedapudi6788.github.io/master/images/finnlp_fra.png) -->
+![](/images/finnlp_eng.png) ![](/images/finnlp_fra.png) -->
 
 
 # Installation
