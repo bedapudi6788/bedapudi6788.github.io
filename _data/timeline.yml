@@ -1,17 +1,17 @@
 - title: Student, IIT Guwahati
   from: 2013
   to: 2017
-  description: Graduated from IIT Guwahati, Computer Science and Engineering department in 2017 (B.tech). <br> My BTP was on Verification of Contract Refinement using Othello Contract Refinement and Analysis uner Prof. Purandar Bhaduri. 
+  description: Graduated from IIT Guwahati, Computer Science and Engineering department in 2017 (B.tech). <br> My BTP was on Verification of Contract Refinement using Othello Contract Refinement and Analysis under the guidance of Prof. Purandar Bhaduri. 
 
 - title: Software Developer Internship, Innoplexus, Pune
   from: 2016 May
   to: 2016 July
-  description: 1. Setted up ElasticSearch (2.3) production cluster along with ES Shield and Graylog. <br> 2. Wrote high performance modules for data migration from MongoDB to ElasticSearch and Neo4j. (Increased performance of existing modules by a factor of 50-60) <br> 3. Implemented naive spell correction and query auto completion for various fields using ElasticSearch.
+  description: 1. Setted up ElasticSearch (v2.3) production cluster along with ES Shield and Graylog. <br> 2. Wrote high performance modules for data migration from MongoDB to ElasticSearch and Neo4j. (Increased performance of existing modules by a factor of 50-60) <br> 3. Implemented naive spell correction and query auto completion for various fields using ElasticSearch.
 
 - title: Junior Research Associate, Abzooba, Pune
   from: 2017 July
   to: 2018 July
-  description: 1. Implemented graph db to enhance the accuracy and performance of Abzooba's propitiatory NLU engine. <br> 2. Implemented deep learning (LSTM) based models for a significant change in the performance and F1 scores of our Entity Extraction and Text Classification engines. <br> 3. Explored new state of art methods and implemented them in various projects to decrease the work load of AI trainers and increase accuracy significantly of our predictions with less data. <br> 4. Created a single interface for showcasing our various NLP capabilities where with a single click the data is trained on different models and results can be viewed. Implemented dynamic loading of trained deep learning models. <br> 5. Worked on the NLP and NLU part of various chatbots, which offer various functionality like clothing suggestions, natural language text to MySQL converters etc.
+  description: 1. Implemented graph db to enhance the accuracy and performance of Abzooba's propitiatory NLU engine. <br> 2. Implemented deep learning (LSTM) based models for a significant change in the performance and F1 scores of our Entity Extraction and Text Classification engines. <br> 3. Explored new state of art methods and implemented them in various projects to decrease the work load of AI trainers and increase accuracy significantly of our predictions with less data. <br> 4. Created a single interface for showcasing our various NLP capabilities, where with a single click the data is trained on different models and results can be viewed. Implemented dynamic loading of trained deep learning models. <br> 5. Worked on the NLP and NLU part of various chatbots, which offer various functionality like clothing suggestions, natural language text to MySQL converters etc.
 
 - title: Deep Learning engineer, Reckonsys Tech Labs, Bengaluru
   from: 2018 August
