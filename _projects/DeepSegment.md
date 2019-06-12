@@ -19,8 +19,12 @@ Designed with ASR outputs in mind, DeepSegment uses BiLSTM + CRF for automatic s
 
 ![](https://cdn-images-1.medium.com/max/800/1*jKsNbSK7_7xGWLVOyLjMew.png)
 
+For the completely unpunctuated test case, the absolute accuracy is 52.637 and the F1 score is 91.33 (precision: 93.242, recall: 89.506).
+
 # Installation
 ```
+# Install tensorflow or tensorflow-gpu separately
+# Tested with tf and tf-gpu version 1.3.0 to 1.10.0
 pip install deepsegment
 ```
 
