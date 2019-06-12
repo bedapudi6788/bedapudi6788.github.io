@@ -1,7 +1,7 @@
-- name: Adobe Photoshop
-  percentage: 95
+- name: Data Engineering
+  percentage: 90
   color: info
 
-- name: Adobe Illustrator
-  percentage: 90
+- name: DevOps (Docker, Kubernetes..)
+  percentage: 75
   color: success
