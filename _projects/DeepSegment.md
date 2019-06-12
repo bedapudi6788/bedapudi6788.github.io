@@ -48,7 +48,7 @@ segmenter.segment('I am Batman i live in gotham')
 ['I am Batman', 'i live in gotham']
 ```
 
-The pre-trained models are available at https://github.com/bedapudi6788/DeepSegment-Models
+The pre-trained models are available [here.](https://github.com/bedapudi6788/DeepSegment-Models)
 
 <p class="text-center">
 {% include button.html link="https://github.com/bedapudi6788/deepsegment" text="Learn More" %}
