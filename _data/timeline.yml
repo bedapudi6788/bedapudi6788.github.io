@@ -1,14 +1,23 @@
-- title: Student, Harvard CS
-  from: 2014
-  to: 2018
+- title: Student, IIT Guwahati
+  from: 2013
+  to: 2017
   description: Lorem ipsum dolor sit amet, consectetur adipiscing elit,
                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
                reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
 
-- title: Software Engineer, Google, UK
-  from: 2018
+- title: Software Developer Internship, Innoplexus, Pune
+  from: 2016 May
+  to: 2016 July
+  description: 1. Setted up ElasticSearch (2.3) production cluster along with ES Shield and Graylog.
+
+  2. Wrote high performance modules for data migration from MongoDB to ElasticSearch and Neo4j. (Increased performance of existing modules by a factor of 50-60) 
+
+  3.aa
+
+- title: Junior Research Associate, Abzooba, Pune
+  from: 2017 May
   to: present
   description: Lorem ipsum dolor sit amet, consectetur adipiscing elit,
                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
