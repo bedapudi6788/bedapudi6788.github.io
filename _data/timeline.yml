@@ -18,7 +18,7 @@
   to: 2019 May
   description: 1. Built data extraction modules for various highly domain specific, large contracts that can even deal with nosy text (result of OCR). <br> 2. Built document categorization system that can automatically categorize and rename hundreds of different types of large documents and is extremely fast. <br> 3. Built a NLP module to extract and cross verifies extremely sensitive information from multiple legal documents and reports the anomalies. <br> 4.  Built a named entity recognition system using different machine learning and NLP techniques for highly domain specific data, which can work with very low amount of training data. <br> 5. Designed and built a novel algorithm using manchine-learning, that can extract structured data from hundreds of different types of tables like multi-line cells, cells separated only by a single space etc. 
 
- - title: Senior Data Scientist, DeepAffects, Pune
+- title: Senior Data Scientist, DeepAffects, Pune
   from: 2019 May
   to: present
   description: ///
