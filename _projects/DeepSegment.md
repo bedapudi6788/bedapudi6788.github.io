@@ -23,9 +23,9 @@ For the completely unpunctuated test case, the absolute accuracy is 52.637 and t
 
 
 
-DeepSegment (slightly modified version) performance on English and French tasks of FinSBD 2019 
+<!-- DeepSegment (slightly modified version) performance on English and French tasks of FinSBD 2019 
 
-![](https://raw.githubusercontent.com/bedapudi6788/bedapudi6788.github.io/master/images/finnlp_eng.png) ![](https://raw.githubusercontent.com/bedapudi6788/bedapudi6788.github.io/master/images/finnlp_fra.png)
+![](https://raw.githubusercontent.com/bedapudi6788/bedapudi6788.github.io/master/images/finnlp_eng.png) ![](https://raw.githubusercontent.com/bedapudi6788/bedapudi6788.github.io/master/images/finnlp_fra.png) -->
 
 
 # Installation
