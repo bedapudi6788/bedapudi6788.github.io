@@ -5,7 +5,7 @@ image: /images/nudenet_example.png
 description: An ensemble of Neural Nets for Nudity Detection and Censoring
 ---
 
-# DeepPunct
+# NudeNet
 
 <!-- Place this tag where you want the button to render. -->
 <!-- Place this tag in your head or just before your close body tag. -->
