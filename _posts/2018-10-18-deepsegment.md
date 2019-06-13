@@ -1,8 +1,8 @@
 ---
 title: Sentence Segmentation of unpunctuated text.
-tags: [External Post, Git]
+tags: [DeepSegment v1, Deep Learning, Sentence Segmentation]
 style: fill
-color: warning
-description: Using `git reflog` and `git reset` to save your code.
-external_url: https://blog.usejournal.com/how-to-undo-your-git-failure-b76e31ecac74
+color: primary
+description: Using Deep learning for Sentence Segmentation of bad or un punctuated text.
+external_url: https://medium.com/@praneethbedapudi/deepcorrection-1-sentence-segmentation-of-unpunctuated-text-a1dbc0db4e98
 ---
