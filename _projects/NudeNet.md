@@ -15,6 +15,43 @@ description: An ensemble of Neural Nets for Nudity Detection and Censoring
 <a class="github-button" href="https://github.com/bedapudi6788/nudenet" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star bedapudi6788/nudenet on GitHub">Star</a>
 <a class="github-button" href="https://github.com/bedapudi6788/nudenet/fork" data-icon="octicon-repo-forked" data-size="large" data-show-count="true" aria-label="Fork bedapudi6788/nudenet on GitHub">Fork</a>
 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+  function parseQuery(e) {
+    $('#loader').show();
+    query = $('#queryInput').val();
+
+    let payload = {
+      query: query
+    };
+    axios.post('/api/parse', payload)
+    .then((response) => {
+      if (!response || !response.data) {
+        console.error('Server Error! Please try again');
+        $('#loader').hide();
+        return;
+      }
+      $('#loader').hide();
+      processResponse(response.data);
+    })
+    .catch((err) => {
+      $('#loader').hide();
+      console.error(err);
+    })
+  }
+
+  function processResponse(data) {
+    $('#resultJSON').html('<h4>Result:</h4><br>' + JSON.stringify(data, undefined, 2));
+  }
+</script>
+
+<input type="text" class="form-control" id="queryInput" placeholder="Enter Query">
+<button class="btn btn-primary" type="button" onclick="parseQuery()">Submit</button>
+
+
+
 Pre-trained Classification and Detection models for nudity detection and censoring.
 
 ![](/images/nudenet_example.png)
