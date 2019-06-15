@@ -63,7 +63,7 @@ description: An ensemble of Neural Nets for Nudity Detection and Censoring
     let payload = {
       url: query
     };
-    axios.post('http://ai.bpraneeth.com/', payload)
+    axios.post('http://ai.bpraneeth.com/nudenet_classifier_url', payload)
     .then((response) => {
       if (!response || !response.data) {
         console.error('Server Error! Please try again');
