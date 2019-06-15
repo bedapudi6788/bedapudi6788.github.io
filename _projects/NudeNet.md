@@ -17,11 +17,50 @@ description: An ensemble of Neural Nets for Nudity Detection and Censoring
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
+<style>
+  #resultJSON:empty {display: none}
+
+  #loader {
+    display: none;
+    border: 5px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 5px solid #1e93e0;
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-animation: spin 1s linear infinite;
+    /* Safari */
+    animation: spin 1s linear infinite;
+  }
+
+  /* Safari */
+
+  @-webkit-keyframes spin {
+    0% {
+      -webkit-transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+</style>
 
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
   function parseQuery(e) {
     query = $('#queryInput').val();
+    $('#loader').show();
 
     let payload = {
       url: query
@@ -31,12 +70,15 @@ description: An ensemble of Neural Nets for Nudity Detection and Censoring
     .then((response) => {
       if (!response || !response.data) {
         console.error('Server Error! Please try again');
+        $('#loader').hide();
         return;
       }
+      $('#loader').hide();
       console.log(JSON.stringify(response.data, undefined, 2))
       processResponse(response.data);
     })
     .catch((err) => {
+      $('#loader').hide();
       console.error(err);
     })
   }
@@ -47,6 +89,8 @@ function processResponse(data) {
 </script>
 
 <input type="text" class="form-control" id="queryInput" placeholder="Enter Query">
+<div id="loader"></div>
+
 <button class="btn btn-primary" type="button" onclick="parseQuery()">Submit</button>
 <div class="col-sm-12"> <pre id='resultJSON'></pre> </div>
 
