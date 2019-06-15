@@ -26,14 +26,14 @@ description: An ensemble of Neural Nets for Nudity Detection and Censoring
     let payload = {
       url: query
     };
-    console.log(payload.toString())
+    console.log(JSON.stringify(payload, undefined, 2))
     axios.post('http://ai.bpraneeth.com/nudenet_classifier_url', payload)
     .then((response) => {
       if (!response || !response.data) {
         console.error('Server Error! Please try again');
         return;
       }
-      console.load(response.data.toString())
+      console.log(JSON.stringify(response.data, undefined, 2))
       processResponse(response.data);
     })
     .catch((err) => {
