@@ -88,7 +88,7 @@ function processResponse(data) {
   }
 </script>
 
-<input type="text" class="form-control" id="queryInput" placeholder="Enter Query">
+<input type="text" class="form-control" id="queryInput" placeholder="Enter image file direct URL">
 <div id="loader"></div>
 
 <button class="btn btn-primary" type="button" onclick="parseQuery()">Submit</button>
