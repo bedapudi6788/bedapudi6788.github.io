@@ -17,6 +17,43 @@ description: An ensemble of Neural Nets for Nudity Detection and Censoring
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
+
+
+<style>
+  #loader {
+    border: 5px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 5px solid #1e93e0;
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-animation: spin 1s linear infinite;
+    /* Safari */
+    animation: spin 1s linear infinite;
+  }
+
+  /* Safari */
+
+  @-webkit-keyframes spin {
+    0% {
+      -webkit-transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+</style>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
   function parseQuery(e) {
@@ -24,9 +61,9 @@ description: An ensemble of Neural Nets for Nudity Detection and Censoring
     query = $('#queryInput').val();
 
     let payload = {
-      query: query
+      url: query
     };
-    axios.post('/api/parse', payload)
+    axios.post('http://ai.bpraneeth.com/', payload)
     .then((response) => {
       if (!response || !response.data) {
         console.error('Server Error! Please try again');
@@ -42,13 +79,14 @@ description: An ensemble of Neural Nets for Nudity Detection and Censoring
     })
   }
 
-  function processResponse(data) {
+function processResponse(data) {
     $('#resultJSON').html('<h4>Result:</h4><br>' + JSON.stringify(data, undefined, 2));
   }
 </script>
 
 <input type="text" class="form-control" id="queryInput" placeholder="Enter Query">
 <button class="btn btn-primary" type="button" onclick="parseQuery()">Submit</button>
+<div class="col-sm-12"> <pre id='resultJSON'></pre> </div>
 
 
 
