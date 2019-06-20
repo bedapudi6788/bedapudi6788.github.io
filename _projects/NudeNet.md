@@ -21,14 +21,13 @@ description: An ensemble of Neural Nets for Nudity Detection and Censoring
   #resultJSON:empty {display: none}
 
   #loader {
-    display: none;
     border: 5px solid #f3f3f3;
     border-radius: 50%;
     border-top: 5px solid #1e93e0;
     width: 40px;
     height: 40px;
     position: absolute;
-    top: 50%;
+    top: 20%;
     left: 50%;
     -webkit-animation: spin 1s linear infinite;
     /* Safari */
@@ -86,6 +85,12 @@ description: An ensemble of Neural Nets for Nudity Detection and Censoring
 function processResponse(data) {
     $('#resultJSON').html('<h4>Result:</h4><br>' + JSON.stringify(data, undefined, 2));
   }
+
+$(document).ready(function() {
+    console.log( "ready!" );
+    $('#loader').hide();
+});
+
 </script>
 
 <input type="text" class="form-control" id="queryInput" placeholder="Classification Demo: Enter image file direct URL">
