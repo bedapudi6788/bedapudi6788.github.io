@@ -86,10 +86,10 @@ function processResponse(data) {
     $('#resultJSON').html('<h4>Result:</h4><br>' + JSON.stringify(data, undefined, 2));
   }
 
-$(document).ready(function() {
+window.onload = function() {
     console.log( "ready!" );
     $('#loader').hide();
-});
+};
 
 </script>
 
