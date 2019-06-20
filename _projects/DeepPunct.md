@@ -15,6 +15,93 @@ description: Designed with ASR outputs in mind, DeepPunct uses LSTM encoder and 
 <a class="github-button" href="https://github.com/bedapudi6788/deepcorrect" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star bedapudi6788/deepcorrect on GitHub">Star</a>
 <a class="github-button" href="https://github.com/bedapudi6788/deepcorrect/fork" data-icon="octicon-repo-forked" data-size="large" data-show-count="true" aria-label="Fork bedapudi6788/deepcorrect on GitHub">Fork</a>
 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+<style>
+  #resultJSON:empty {display: none}
+
+  #loader {
+    border: 5px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 5px solid #1e93e0;
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    -webkit-animation: spin 1s linear infinite;
+    /* Safari */
+    animation: spin 1s linear infinite;
+  }
+
+  /* Safari */
+
+  @-webkit-keyframes spin {
+    0% {
+      -webkit-transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+</style>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+  function parseQuery(e) {
+    query = $('#queryInput').val();
+    $('#loader').show();
+
+    let payload = {
+      text: query
+    };
+    console.log(JSON.stringify(payload, undefined, 2))
+    axios.post('http://ai.bpraneeth.com/deep-segment_punct', payload)
+    .then((response) => {
+      if (!response || !response.data) {
+        console.error('Server Error! Please try again');
+        $('#loader').hide();
+        return;
+      }
+      $('#loader').hide();
+      console.log(JSON.stringify(response.data, undefined, 2))
+      processResponse(response.data);
+    })
+    .catch((err) => {
+      $('#loader').hide();
+      console.error(err);
+    })
+  }
+
+function processResponse(data) {
+    $('#resultJSON').html('<h4>Result:</h4><br>' + JSON.stringify(data, undefined, 2));
+  }
+
+window.onload = function() {
+    console.log( "ready!" );
+    $('#loader').hide();
+};
+
+</script>
+
+<input type="text" class="form-control" id="queryInput" placeholder="DeepSegment + DeepPunct demo. Input limit: 600 characters.">
+<div id="loader"></div>
+
+<button class="btn btn-primary" type="button" onclick="parseQuery()">Submit</button>
+<div class="col-sm-12"> <pre id='resultJSON'></pre> </div>
+
+
+
+
 Designed with ASR outputs in mind, DeepPunct uses LSTM encoder and decoders with Luong attention for automatic punctuation restoration.
 
 ![](/images/deeppunct_example.png)
