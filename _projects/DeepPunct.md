@@ -104,6 +104,7 @@ window.onload = function() {
 
 Designed with ASR outputs in mind, DeepPunct uses LSTM encoder and decoders with Luong attention for automatic punctuation restoration.
 
+![](/images/deeppunct_example.png)
 
 
 
