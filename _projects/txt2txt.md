@@ -65,7 +65,6 @@ model.load_weights('path_to_checkpoint_file')
 infer(input_text, model, params)
 ```
 
-The pre-trained models are available [here.](https://drive.google.com/open?id=1Yd8cJaqfQkrJMbRVWIWtuyo4obTDYu-e)
 
 <p class="text-center">
 {% include button.html link="https://github.com/bedapudi6788/txt2txt" text="Learn More" %}
