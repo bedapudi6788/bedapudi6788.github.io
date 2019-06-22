@@ -1,7 +1,7 @@
 # Site settings
 title: Praneeth's personal site
 description: >- # this means to ignore newlines until "baseurl:"
-  Hello! My name is Bedapudi Praneeth and I currently work as a Sr. Data Scientist at DeepAffects.
+  Hello! My name is Bedapudi Praneeth and I currently work as a Sr. NLP Engineer at DeepAffects.
 baseurl: ""  # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 repository: bedapudi6788/portfolYOU
