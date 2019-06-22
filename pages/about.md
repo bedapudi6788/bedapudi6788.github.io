@@ -8,7 +8,7 @@ weight: 3
 # **About Me**
 
 Hi I am **{{ site.author.name }}**,<br>
-I currently work as a Senior Data Scientist at [DeepAffects](http://www.deepaffects.com/).
+I currently work as a Senior NLP Engineer at [DeepAffects](http://www.deepaffects.com/).
 
 <div class="row">
 {% include skills.html title="Programming Skills" source=site.data.programming-skills %}
