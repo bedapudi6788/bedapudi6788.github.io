@@ -1,6 +1,6 @@
 ---
 name: NudeNet
-tools: [Keras, Python]
+tools: [Demo-inside, Keras, Python]
 image: /images/nudenet_example.png
 description: An ensemble of Neural Nets for Nudity Detection and Censoring
 ---
@@ -21,6 +21,7 @@ description: An ensemble of Neural Nets for Nudity Detection and Censoring
   #resultJSON:empty {display: none}
 
   #loader {
+    z-index:1000;
     border: 5px solid #f3f3f3;
     border-radius: 50%;
     border-top: 5px solid #1e93e0;

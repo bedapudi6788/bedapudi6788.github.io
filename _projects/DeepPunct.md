@@ -1,6 +1,6 @@
 ---
 name: DeepPunct
-tools: [Keras, LSTM, Python, Attention]
+tools: [Demo-inside, Keras, LSTM, Python, Attention]
 image: /images/deeppunct_example.png
 description: Designed with ASR outputs in mind, DeepPunct uses LSTM encoder and decoders with Luong attention for automatic punctuation restoration.
 ---
@@ -21,6 +21,7 @@ description: Designed with ASR outputs in mind, DeepPunct uses LSTM encoder and 
   #resultJSON:empty {display: none}
 
   #loader {
+    z-index:1000;
     border: 5px solid #f3f3f3;
     border-radius: 50%;
     border-top: 5px solid #1e93e0;
