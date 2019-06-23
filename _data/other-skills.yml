@@ -2,6 +2,6 @@
   percentage: 90
   color: info
 
-- name: DevOps (Docker, Kubernetes..)
+- name: DevOps
   percentage: 75
   color: success
