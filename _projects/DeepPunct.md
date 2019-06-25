@@ -66,7 +66,7 @@ description: Designed with ASR outputs in mind, DeepPunct uses LSTM encoder and 
       text: query
     };
     console.log(JSON.stringify(payload, undefined, 2))
-    axios.post('http://ai.bpraneeth.com/deep-segment_punct', payload)
+    axios.post('http://ai.bpraneeth.com:6788/deep-segment_punct', payload)
     .then((response) => {
       if (!response || !response.data) {
         console.error('Server Error! Please try again');
