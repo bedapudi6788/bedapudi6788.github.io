@@ -10,10 +10,10 @@ weight: 3
 Hi I am **{{ site.author.name }}**,<br>
 I currently work as a Senior NLP Engineer at [DeepAffects](http://www.deepaffects.com/).
 
-<div class="row">
+<!-- <div class="row">
 {% include skills.html title="Programming Skills" source=site.data.programming-skills %}
 {% include skills.html title="Other Skills" source=site.data.other-skills %}
-</div>
+</div> -->
 
 <div class="row">
 {% include timeline.html %}
