@@ -1,7 +1,7 @@
 - title: Senior NLP Engineer, DeepAffects, Mumbai
   from: 2019 May
   to: present
-  description: ///
+  description: 1. Implemented DeepAffects' Smart Punctuation API and adapted it for time-constrained ASR use cases. (Including data collection, dockerization of DL models, client libraries and Kuberentes deployments). <br> 2. Built summarization system for conversational data. (Including data collection, building dialogue act prediction models, clustering, dockerization and kuberentes deployments) <br> 3. Built various analytics and metrics (aspect based key-phrase extraction, call scoring, emotion prediction etc.) for DeepAffects' callspot and calleq. 4. Worked on various parts of ASR pipeline (adapting language models for low-resource domains and domain specific phrases, adapting core ASR models for various low-resource accents.). <br> 5. Adapted DeepSegment for FinSBD 2019 shared task (First in French and Close second in English tasks.).
 
 - title: Deep Learning engineer, Reckonsys Tech Labs, Bengaluru
   from: 2018 August
