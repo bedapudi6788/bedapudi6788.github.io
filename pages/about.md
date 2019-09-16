@@ -18,3 +18,14 @@ I currently work as a Senior NLP Engineer at [DeepAffects](http://www.deepaffect
 <div class="row">
 {% include timeline.html %}
 </div>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-147985030-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-147985030-1');
+</script>
+

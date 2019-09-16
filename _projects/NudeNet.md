@@ -7,6 +7,17 @@ description: An ensemble of Neural Nets for Nudity Detection and Censoring
 
 # NudeNet
 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-147985030-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-147985030-1');
+</script>
+
+
 <!-- Place this tag where you want the button to render. -->
 <!-- Place this tag in your head or just before your close body tag. -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>
