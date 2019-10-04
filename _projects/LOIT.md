@@ -2,7 +2,7 @@
 name: LOIT
 tools: [DataSet, Twitter, Telugu, Hindi]
 image: /images/LOIT.png
-description: Lot Of Indic Tweets dataset.
+description: Lot Of Indic Tweets dataset and corresponding pre-trained models.
 ---
 
 # LOIT
