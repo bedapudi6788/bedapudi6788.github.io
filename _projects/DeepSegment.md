@@ -41,25 +41,37 @@ For the completely unpunctuated test case, the absolute accuracy is 52.637 and t
 
 # Installation
 ```
-# Install tensorflow or tensorflow-gpu separately
-# Tested with tf and tf-gpu version 1.3.0 to 1.10.0
 pip install deepsegment
 ```
 
 # Usage
 ```
-# if you are using gpu for prediction, please see https://stackoverflow.com/questions/34199233/how-to-prevent-tensorflow-from-allocating-the-totality-of-a-gpu-memory for restricting memory usage
-
 from deepsegment import DeepSegment
-# the config file can be found at in the pre-trained model zip. Change the model paths in the config file before loading. 
-# Since the complete glove embeddings are not needed for predictions, "glove_path" can be left empty in config file
+# The default language is 'en'
 
-segmenter = DeepSegment('path_to_config')
+# english (en), french (fr), italian (it) are supported as of now
+
+segmenter = DeepSegment('en')
+
 segmenter.segment('I am Batman i live in gotham')
-['I am Batman', 'i live in gotham']
+# ['I am Batman', 'i live in gotham']
 ```
 
-The pre-trained models are available [here.](https://github.com/bedapudi6788/DeepSegment-Models)
+```
+# Using with tfserving docker image
+docker pull bedapudi6788/deepsegment_en:v2
+docker run -d -p 8500:8500 bedapudi6788/deepsegment_en:v2
+
+from deepsegment import DeepSegment
+
+# The default language is 'en'
+
+segmenter = DeepSegment('en', tf_serving=True)
+
+segmenter.segment('I am Batman i live in gotham')
+# ['I am Batman', 'i live in gotham']
+```
+
 
 <p class="text-center">
 {% include button.html link="https://github.com/bedapudi6788/deepsegment" text="Learn More" %}
