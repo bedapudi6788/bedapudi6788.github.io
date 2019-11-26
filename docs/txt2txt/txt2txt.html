@@ -1,0 +1,1222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.2" />
+<title>txt2txt.txt2txt API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>txt2txt.txt2txt</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import os
+import pickle
+import logging
+
+import numpy as np
+np.random.seed(6788)
+
+import tensorflow as tf
+try:
+    tf.set_random_seed(6788)
+except:
+    pass
+
+from keras.layers import Input, Embedding, LSTM, TimeDistributed, Dense, SimpleRNN, Activation, dot, concatenate, Bidirectional, GRU
+from keras.models import Model, load_model
+
+from keras.callbacks import ModelCheckpoint
+
+
+# Placeholder for max lengths of input and output which are user configruable constants
+max_input_length = None
+max_output_length = None
+
+char_start_encoding = 1
+char_padding_encoding = 0
+
+def build_sequence_encode_decode_dicts(input_data):
+    &#34;&#34;&#34;
+    Builds encoding and decoding dictionaries for given list of strings.
+
+    Parameters:
+
+    input_data (list): List of strings.
+
+    Returns:
+
+    encoding_dict (dict): Dictionary with chars as keys and corresponding integer encodings as values.
+
+    decoding_dict (dict): Reverse of above dictionary.
+
+    len(encoding_dict) + 2: +2 because of special start (1) and padding (0) chars we add to each sequence.
+
+    &#34;&#34;&#34;
+    encoding_dict = {}
+    decoding_dict = {}
+    for line in input_data:
+        for char in line:
+            if char not in encoding_dict:
+                # Using 2 + because our sequence start encoding is 1 and padding encoding is 0
+                encoding_dict[char] = 2 + len(encoding_dict)
+                decoding_dict[2 + len(decoding_dict)] = char
+    
+    return encoding_dict, decoding_dict, len(encoding_dict) + 2
+
+def encode_sequences(encoding_dict, sequences, max_length):
+    &#34;&#34;&#34;
+    Encodes given input strings into numpy arrays based on the encoding dicts supplied.
+
+    Parameters:
+
+    encoding_dict (dict): Dictionary with chars as keys and corresponding integer encodings as values.
+
+    sequences (list): List of sequences (strings) to be encoded.
+
+    max_length (int): Max length of input sequences. All sequences will be padded to this length to support batching.
+
+    Returns:
+    
+    encoded_data (numpy array): Reverse of above dictionary.
+
+    &#34;&#34;&#34;
+    encoded_data = np.zeros(shape=(len(sequences), max_length))
+    for i in range(len(sequences)):
+        for j in range(min(len(sequences[i]), max_length)):
+            encoded_data[i][j] = encoding_dict[sequences[i][j]]
+    return encoded_data
+
+
+def decode_sequence(decoding_dict, sequence):
+    &#34;&#34;&#34;
+    Decodes integers into string based on the decoding dict.
+
+    Parameters:
+
+    decoding_dict (dict): Dictionary with chars as values and corresponding integer encodings as keys.
+
+    Returns:
+
+    sequence (str): Decoded string.
+
+    &#34;&#34;&#34;
+    text = &#39;&#39;
+    for i in sequence:
+        if i == 0:
+            break
+        text += decoding_dict[i]
+    return text
+
+
+def generate(texts, input_encoding_dict, model, max_input_length, max_output_length, beam_size, max_beams, min_cut_off_len, cut_off_ratio):
+    &#34;&#34;&#34;
+    Main function for generating encoded output(s) for encoded input(s)
+
+    Parameters:
+
+    texts (list/str): List of input strings or single input string.
+
+    input_encoding_dict (dict): Encoding dictionary generated from the input strings.
+
+    model (kerasl model): Loaded keras model.
+
+    max_input_length (int): Max length of input sequences. All sequences will be padded to this length to support batching.
+
+    max_output_length (int): Max output length. Need to know when to stop decoding if no padding character comes.
+
+    beam_size (int): Beam size at each prediction.
+
+    max_beams (int): Maximum number of beams to be kept in memory.
+
+    min_cut_off_len (int): Used in deciding when to stop decoding.
+
+    cut_off_ratio (float): Used in deciding when to stop decoding.
+
+        # min_cut_off_len = max(min_cut_off_len, cut_off_ratio*len(max(texts, key=len)))
+        # min_cut_off_len = min(min_cut_off_len, max_output_length)
+
+    Returns:
+    
+    all_completed_beams (list): List of completed beams.
+
+    &#34;&#34;&#34;
+    if not isinstance(texts, list):
+        texts = [texts]
+
+    min_cut_off_len = max(min_cut_off_len, cut_off_ratio*len(max(texts, key=len)))
+    min_cut_off_len = min(min_cut_off_len, max_output_length)
+
+    all_completed_beams = {i:[] for i in range(len(texts))}
+    all_running_beams = {}
+    for i, text in enumerate(texts):
+        all_running_beams[i] = [[np.zeros(shape=(len(text), max_output_length)), [1]]]
+        all_running_beams[i][0][0][:,0] = char_start_encoding
+
+    
+    while len(all_running_beams) != 0:
+        for i in all_running_beams:
+            all_running_beams[i] = sorted(all_running_beams[i], key=lambda tup:np.prod(tup[1]), reverse=True)
+            all_running_beams[i] = all_running_beams[i][:max_beams]
+        
+        in_out_map = {}
+        batch_encoder_input = []
+        batch_decoder_input = []
+        t_c = 0
+        for text_i in all_running_beams:
+            if text_i not in in_out_map:
+                in_out_map[text_i] = []
+            for running_beam in all_running_beams[text_i]:
+                in_out_map[text_i].append(t_c)
+                t_c+=1
+                batch_encoder_input.append(texts[text_i])
+                batch_decoder_input.append(running_beam[0][0])
+
+
+        batch_encoder_input = encode_sequences(input_encoding_dict, batch_encoder_input, max_input_length)
+        batch_decoder_input = np.asarray(batch_decoder_input)
+        batch_predictions = model.predict([batch_encoder_input, batch_decoder_input])
+
+        t_c = 0
+        for text_i, t_cs in in_out_map.items():
+            temp_running_beams = []
+            for running_beam, probs in all_running_beams[text_i]:
+                if len(probs) &gt;= min_cut_off_len:
+                    all_completed_beams[text_i].append([running_beam[:,1:], probs])
+                else:
+                    prediction = batch_predictions[t_c]
+                    sorted_args = prediction.argsort()
+                    sorted_probs = np.sort(prediction)
+
+                    for i in range(1, beam_size+1):
+                        temp_running_beam = np.copy(running_beam)
+                        i = -1 * i
+                        ith_arg = sorted_args[:, i][len(probs)]
+                        ith_prob = sorted_probs[:, i][len(probs)]
+                        
+                        temp_running_beam[:, len(probs)] = ith_arg
+                        temp_running_beams.append([temp_running_beam, probs + [ith_prob]])
+
+                t_c+=1
+
+            all_running_beams[text_i] = [b for b in temp_running_beams]
+        
+        to_del = []
+        for i, v in all_running_beams.items():
+            if not v:
+                to_del.append(i)
+        
+        for i in to_del:
+            del all_running_beams[i]
+
+    return all_completed_beams
+
+def infer(texts, model, params, beam_size=3, max_beams=3, min_cut_off_len=10, cut_off_ratio=1.5):
+    &#34;&#34;&#34;
+    Main function for generating output(s) for given input(s)
+
+    Parameters:
+
+    texts (list/str): List of input strings or single input string.
+
+    model (kerasl model): Loaded keras model.
+
+    params (dict): Loaded params generated by build_params
+
+    beam_size (int): Beam size at each prediction.
+
+    max_beams (int): Maximum number of beams to be kept in memory.
+
+    min_cut_off_len (int): Used in deciding when to stop decoding.
+
+    cut_off_ratio (float): Used in deciding when to stop decoding.
+
+        # min_cut_off_len = max(min_cut_off_len, cut_off_ratio*len(max(texts, key=len)))
+        # min_cut_off_len = min(min_cut_off_len, max_output_length)
+
+    Returns:
+    
+    outputs (list of dicts): Each dict has the sequence and probability.
+
+    &#34;&#34;&#34;
+    if not isinstance(texts, list):
+        texts = [texts]
+
+    input_encoding_dict = params[&#39;input_encoding&#39;]
+    output_decoding_dict = params[&#39;output_decoding&#39;]
+    max_input_length = params[&#39;max_input_length&#39;]
+    max_output_length = params[&#39;max_output_length&#39;]
+
+    all_decoder_outputs = generate(texts, input_encoding_dict, model, max_input_length, max_output_length, beam_size, max_beams, min_cut_off_len, cut_off_ratio)
+    outputs = []
+
+    for i, decoder_outputs in all_decoder_outputs.items():
+        outputs.append([])
+        for decoder_output, probs in decoder_outputs:
+            outputs[-1].append({&#39;sequence&#39;: decode_sequence(output_decoding_dict, decoder_output[0]), &#39;prob&#39;: np.prod(probs)})
+
+    return outputs
+
+def generate_greedy(texts, input_encoding_dict, model, max_input_length, max_output_length):
+    &#34;&#34;&#34;
+    Main function for generating output(s) for given input(s)
+
+    Parameters:
+
+    texts (list/str): List of input strings or single input string.
+
+    input_encoding_dict (dict): Encoding dictionary generated from the input strings.
+
+    model (kerasl model): Loaded keras model.
+
+    max_input_length (int): Max length of input sequences. All sequences will be padded to this length to support batching.
+
+    max_output_length (int): Max output length. Need to know when to stop decoding if no padding character comes.
+
+    Returns:
+    
+    outputs (list): Generated outputs.
+
+    &#34;&#34;&#34;
+    if not isinstance(texts, list):
+        texts = [texts]
+
+    encoder_input = encode_sequences(input_encoding_dict, texts, max_input_length)
+    decoder_input = np.zeros(shape=(len(encoder_input), max_output_length))
+    decoder_input[:,0] = char_start_encoding
+    for i in range(1, max_output_length):
+        output = model.predict([encoder_input, decoder_input]).argmax(axis=2)
+        decoder_input[:,i] = output[:,i]
+        
+        if np.all(decoder_input[:,i] == char_padding_encoding):
+            return decoder_input[:,1:]
+
+    return decoder_input[:,1:]
+
+def infer_greedy(texts, model, params):
+    &#34;&#34;&#34;
+    Main function for generating output(s) for given input(s)
+
+    Parameters:
+
+    texts (list/str): List of input strings or single input string.
+
+    model (kerasl model): Loaded keras model.
+
+    params (dict): Loaded params generated by build_params
+
+    Returns:
+    
+    outputs (list): Generated outputs.
+
+    &#34;&#34;&#34;
+    return_string = False
+    if not isinstance(texts, list):
+        return_string = True
+        texts = [texts]
+
+    input_encoding_dict = params[&#39;input_encoding&#39;]
+    output_decoding_dict = params[&#39;output_decoding&#39;]
+    max_input_length = params[&#39;max_input_length&#39;]
+    max_output_length = params[&#39;max_output_length&#39;]
+
+    decoder_output = generate_greedy(texts, input_encoding_dict, model, max_input_length, max_output_length)
+    if return_string:
+        return decode_sequence(output_decoding_dict, decoder_output[0])
+
+    return [decode_sequence(output_decoding_dict, i) for i in decoder_output]
+
+
+def build_params(input_data = [], output_data = [], params_path = &#39;test_params&#39;, max_lenghts = (5,5)):
+    &#34;&#34;&#34;
+    Build the params and save them as a pickle. (If not already present.)
+
+    Parameters:
+
+    input_data (list): List of input strings.
+
+    output_data (list): List of output strings.
+
+    params_path (str): Path for saving the params.
+
+    max_lenghts (tuple): (max_input_length, max_output_length)
+
+    Returns:
+    
+    params (dict): Generated params (encoding, decoding dicts ..).
+
+    &#34;&#34;&#34;
+    if os.path.exists(params_path):
+        print(&#39;Loading the params file&#39;)
+        params = pickle.load(open(params_path, &#39;rb&#39;))
+        return params
+    
+    print(&#39;Creating params file&#39;)
+    input_encoding, input_decoding, input_dict_size = build_sequence_encode_decode_dicts(input_data)
+    output_encoding, output_decoding, output_dict_size = build_sequence_encode_decode_dicts(output_data)
+    params = {}
+    params[&#39;input_encoding&#39;] = input_encoding
+    params[&#39;input_decoding&#39;] = input_decoding
+    params[&#39;input_dict_size&#39;] = input_dict_size
+    params[&#39;output_encoding&#39;] = output_encoding
+    params[&#39;output_decoding&#39;] = output_decoding
+    params[&#39;output_dict_size&#39;] = output_dict_size
+    params[&#39;max_input_length&#39;] = max_lenghts[0]
+    params[&#39;max_output_length&#39;] = max_lenghts[1]
+
+    pickle.dump(params, open(params_path, &#39;wb&#39;))
+    return params
+
+def convert_training_data(input_data, output_data, params):
+    &#34;&#34;&#34;
+    Encode training data.
+
+    Parameters:
+
+    input_data (list): List of input strings.
+
+    output_data (list): List of output strings.
+
+    params (dict): Generated params (encoding, decoding dicts ..).
+
+    Returns:
+    
+    x, y: encoded inputs, outputs.
+
+    &#34;&#34;&#34;
+    input_encoding = params[&#39;input_encoding&#39;]
+    input_decoding = params[&#39;input_decoding&#39;]
+    input_dict_size = params[&#39;input_dict_size&#39;]
+    output_encoding = params[&#39;output_encoding&#39;]
+    output_decoding = params[&#39;output_decoding&#39;]
+    output_dict_size = params[&#39;output_dict_size&#39;]
+    max_input_length = params[&#39;max_input_length&#39;]
+    max_output_length = params[&#39;max_output_length&#39;]
+
+    encoded_training_input = encode_sequences(input_encoding, input_data, max_input_length)
+    encoded_training_output = encode_sequences(output_encoding, output_data, max_output_length)
+    training_encoder_input = encoded_training_input
+    training_decoder_input = np.zeros_like(encoded_training_output)
+    training_decoder_input[:, 1:] = encoded_training_output[:,:-1]
+    training_decoder_input[:, 0] = char_start_encoding
+    training_decoder_output = np.eye(output_dict_size)[encoded_training_output.astype(&#39;int&#39;)]
+    x=[training_encoder_input, training_decoder_input]
+    y=[training_decoder_output]
+    return x, y
+
+def build_model(params_path = &#39;test/params&#39;, enc_lstm_units = 128, unroll = True, use_gru=False, optimizer=&#39;adam&#39;, display_summary=True):
+    &#34;&#34;&#34;
+    Build keras model
+
+    Parameters:
+
+    params_path (str): Path for saving/loading the params.
+
+    enc_lstm_units (int): Positive integer, dimensionality of the output space.
+
+    unroll (bool): Boolean (default False). If True, the network will be unrolled, else a symbolic loop will be used. Unrolling can speed-up a RNN, although it tends to be more memory-intensive. Unrolling is only suitable for short sequences.
+
+    use_gru (bool): GRU will be used instead of LSTM
+
+    optimizer (str): optimizer to be used
+
+    display_summary (bool): Set to true for verbose information.
+
+
+    Returns:
+
+    model (keras model): built model object.
+    
+    params (dict): Generated params (encoding, decoding dicts ..).
+
+    &#34;&#34;&#34;
+    # generateing the encoding, decoding dicts
+    params = build_params(params_path = params_path)
+
+    input_encoding = params[&#39;input_encoding&#39;]
+    input_decoding = params[&#39;input_decoding&#39;]
+    input_dict_size = params[&#39;input_dict_size&#39;]
+    output_encoding = params[&#39;output_encoding&#39;]
+    output_decoding = params[&#39;output_decoding&#39;]
+    output_dict_size = params[&#39;output_dict_size&#39;]
+    max_input_length = params[&#39;max_input_length&#39;]
+    max_output_length = params[&#39;max_output_length&#39;]
+
+
+    if display_summary:
+        print(&#39;Input encoding&#39;, input_encoding)
+        print(&#39;Input decoding&#39;, input_decoding)
+        print(&#39;Output encoding&#39;, output_encoding)
+        print(&#39;Output decoding&#39;, output_decoding)
+
+
+    # We need to define the max input lengths and max output lengths before training the model.
+    # We pad the inputs and outputs to these max lengths
+    encoder_input = Input(shape=(max_input_length,))
+    decoder_input = Input(shape=(max_output_length,))
+
+    # Need to make the number of hidden units configurable
+    encoder = Embedding(input_dict_size, enc_lstm_units, input_length=max_input_length, mask_zero=True)(encoder_input)
+    # using concat merge mode since in my experiments it gave the best results same with unroll
+    if not use_gru:
+        encoder = Bidirectional(LSTM(enc_lstm_units, return_sequences=True, return_state=True, unroll=unroll), merge_mode=&#39;concat&#39;)(encoder)
+        encoder_outs, forward_h, forward_c, backward_h, backward_c = encoder
+        encoder_h = concatenate([forward_h, backward_h])
+        encoder_c = concatenate([forward_c, backward_c])
+    
+    else:
+        encoder = Bidirectional(GRU(enc_lstm_units, return_sequences=True, return_state=True, unroll=unroll), merge_mode=&#39;concat&#39;)(encoder)        
+        encoder_outs, forward_h, backward_h= encoder
+        encoder_h = concatenate([forward_h, backward_h])
+    
+
+    # using 2* enc_lstm_units because we are using concat merge mode
+    # cannot use bidirectionals lstm for decoding (obviously!)
+    
+    decoder = Embedding(output_dict_size, 2 * enc_lstm_units, input_length=max_output_length, mask_zero=True)(decoder_input)
+
+    if not use_gru:
+        decoder = LSTM(2 * enc_lstm_units, return_sequences=True, unroll=unroll)(decoder, initial_state=[encoder_h, encoder_c])
+    else:
+        decoder = GRU(2 * enc_lstm_units, return_sequences=True, unroll=unroll)(decoder, initial_state=encoder_h)
+
+
+    # luong attention
+    attention = dot([decoder, encoder_outs], axes=[2, 2])
+    attention = Activation(&#39;softmax&#39;, name=&#39;attention&#39;)(attention)
+
+    context = dot([attention, encoder_outs], axes=[2,1])
+
+    decoder_combined_context = concatenate([context, decoder])
+
+    output = TimeDistributed(Dense(enc_lstm_units, activation=&#34;tanh&#34;))(decoder_combined_context)
+    output = TimeDistributed(Dense(output_dict_size, activation=&#34;softmax&#34;))(output)
+
+    model = Model(inputs=[encoder_input, decoder_input], outputs=[output])
+    model.compile(optimizer=optimizer, loss=&#39;categorical_crossentropy&#39;, metrics=[&#39;accuracy&#39;])
+
+    if display_summary:
+        model.summary()
+    
+    return model, params
+
+
+
+if __name__ == &#39;__main__&#39;:
+    input_data = [&#39;123&#39;, &#39;213&#39;, &#39;312&#39;, &#39;321&#39;, &#39;132&#39;, &#39;231&#39;]
+    output_data = [&#39;123&#39;, &#39;123&#39;, &#39;123&#39;, &#39;123&#39;, &#39;123&#39;, &#39;123&#39;]
+    build_params(input_data = input_data, output_data = output_data, params_path = &#39;params&#39;, max_lenghts=(10, 10))
+    
+    model, params = build_model(params_path=&#39;params&#39;)
+
+    input_data, output_data = convert_training_data(input_data, output_data, params)
+    
+    checkpoint = ModelCheckpoint(&#39;checkpoint&#39;, monitor=&#39;val_acc&#39;, verbose=1, save_best_only=True, mode=&#39;max&#39;)
+    callbacks_list = [checkpoint]
+
+    model.fit(input_data, output_data, validation_data=(input_data, output_data), batch_size=2, epochs=40, callbacks=callbacks_list)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="txt2txt.txt2txt.build_model"><code class="name flex">
+<span>def <span class="ident">build_model</span></span>(<span>params_path='test/params', enc_lstm_units=128, unroll=True, use_gru=False, optimizer='adam', display_summary=True)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Build keras model</p>
+<p>Parameters:</p>
+<p>params_path (str): Path for saving/loading the params.</p>
+<p>enc_lstm_units (int): Positive integer, dimensionality of the output space.</p>
+<p>unroll (bool): Boolean (default False). If True, the network will be unrolled, else a symbolic loop will be used. Unrolling can speed-up a RNN, although it tends to be more memory-intensive. Unrolling is only suitable for short sequences.</p>
+<p>use_gru (bool): GRU will be used instead of LSTM</p>
+<p>optimizer (str): optimizer to be used</p>
+<p>display_summary (bool): Set to true for verbose information.</p>
+<p>Returns:</p>
+<p>model (keras model): built model object.</p>
+<p>params (dict): Generated params (encoding, decoding dicts ..).</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def build_model(params_path = &#39;test/params&#39;, enc_lstm_units = 128, unroll = True, use_gru=False, optimizer=&#39;adam&#39;, display_summary=True):
+    &#34;&#34;&#34;
+    Build keras model
+
+    Parameters:
+
+    params_path (str): Path for saving/loading the params.
+
+    enc_lstm_units (int): Positive integer, dimensionality of the output space.
+
+    unroll (bool): Boolean (default False). If True, the network will be unrolled, else a symbolic loop will be used. Unrolling can speed-up a RNN, although it tends to be more memory-intensive. Unrolling is only suitable for short sequences.
+
+    use_gru (bool): GRU will be used instead of LSTM
+
+    optimizer (str): optimizer to be used
+
+    display_summary (bool): Set to true for verbose information.
+
+
+    Returns:
+
+    model (keras model): built model object.
+    
+    params (dict): Generated params (encoding, decoding dicts ..).
+
+    &#34;&#34;&#34;
+    # generateing the encoding, decoding dicts
+    params = build_params(params_path = params_path)
+
+    input_encoding = params[&#39;input_encoding&#39;]
+    input_decoding = params[&#39;input_decoding&#39;]
+    input_dict_size = params[&#39;input_dict_size&#39;]
+    output_encoding = params[&#39;output_encoding&#39;]
+    output_decoding = params[&#39;output_decoding&#39;]
+    output_dict_size = params[&#39;output_dict_size&#39;]
+    max_input_length = params[&#39;max_input_length&#39;]
+    max_output_length = params[&#39;max_output_length&#39;]
+
+
+    if display_summary:
+        print(&#39;Input encoding&#39;, input_encoding)
+        print(&#39;Input decoding&#39;, input_decoding)
+        print(&#39;Output encoding&#39;, output_encoding)
+        print(&#39;Output decoding&#39;, output_decoding)
+
+
+    # We need to define the max input lengths and max output lengths before training the model.
+    # We pad the inputs and outputs to these max lengths
+    encoder_input = Input(shape=(max_input_length,))
+    decoder_input = Input(shape=(max_output_length,))
+
+    # Need to make the number of hidden units configurable
+    encoder = Embedding(input_dict_size, enc_lstm_units, input_length=max_input_length, mask_zero=True)(encoder_input)
+    # using concat merge mode since in my experiments it gave the best results same with unroll
+    if not use_gru:
+        encoder = Bidirectional(LSTM(enc_lstm_units, return_sequences=True, return_state=True, unroll=unroll), merge_mode=&#39;concat&#39;)(encoder)
+        encoder_outs, forward_h, forward_c, backward_h, backward_c = encoder
+        encoder_h = concatenate([forward_h, backward_h])
+        encoder_c = concatenate([forward_c, backward_c])
+    
+    else:
+        encoder = Bidirectional(GRU(enc_lstm_units, return_sequences=True, return_state=True, unroll=unroll), merge_mode=&#39;concat&#39;)(encoder)        
+        encoder_outs, forward_h, backward_h= encoder
+        encoder_h = concatenate([forward_h, backward_h])
+    
+
+    # using 2* enc_lstm_units because we are using concat merge mode
+    # cannot use bidirectionals lstm for decoding (obviously!)
+    
+    decoder = Embedding(output_dict_size, 2 * enc_lstm_units, input_length=max_output_length, mask_zero=True)(decoder_input)
+
+    if not use_gru:
+        decoder = LSTM(2 * enc_lstm_units, return_sequences=True, unroll=unroll)(decoder, initial_state=[encoder_h, encoder_c])
+    else:
+        decoder = GRU(2 * enc_lstm_units, return_sequences=True, unroll=unroll)(decoder, initial_state=encoder_h)
+
+
+    # luong attention
+    attention = dot([decoder, encoder_outs], axes=[2, 2])
+    attention = Activation(&#39;softmax&#39;, name=&#39;attention&#39;)(attention)
+
+    context = dot([attention, encoder_outs], axes=[2,1])
+
+    decoder_combined_context = concatenate([context, decoder])
+
+    output = TimeDistributed(Dense(enc_lstm_units, activation=&#34;tanh&#34;))(decoder_combined_context)
+    output = TimeDistributed(Dense(output_dict_size, activation=&#34;softmax&#34;))(output)
+
+    model = Model(inputs=[encoder_input, decoder_input], outputs=[output])
+    model.compile(optimizer=optimizer, loss=&#39;categorical_crossentropy&#39;, metrics=[&#39;accuracy&#39;])
+
+    if display_summary:
+        model.summary()
+    
+    return model, params</code></pre>
+</details>
+</dd>
+<dt id="txt2txt.txt2txt.build_params"><code class="name flex">
+<span>def <span class="ident">build_params</span></span>(<span>input_data=[], output_data=[], params_path='test_params', max_lenghts=(5, 5))</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Build the params and save them as a pickle. (If not already present.)</p>
+<p>Parameters:</p>
+<p>input_data (list): List of input strings.</p>
+<p>output_data (list): List of output strings.</p>
+<p>params_path (str): Path for saving the params.</p>
+<p>max_lenghts (tuple): (max_input_length, max_output_length)</p>
+<p>Returns:</p>
+<p>params (dict): Generated params (encoding, decoding dicts ..).</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def build_params(input_data = [], output_data = [], params_path = &#39;test_params&#39;, max_lenghts = (5,5)):
+    &#34;&#34;&#34;
+    Build the params and save them as a pickle. (If not already present.)
+
+    Parameters:
+
+    input_data (list): List of input strings.
+
+    output_data (list): List of output strings.
+
+    params_path (str): Path for saving the params.
+
+    max_lenghts (tuple): (max_input_length, max_output_length)
+
+    Returns:
+    
+    params (dict): Generated params (encoding, decoding dicts ..).
+
+    &#34;&#34;&#34;
+    if os.path.exists(params_path):
+        print(&#39;Loading the params file&#39;)
+        params = pickle.load(open(params_path, &#39;rb&#39;))
+        return params
+    
+    print(&#39;Creating params file&#39;)
+    input_encoding, input_decoding, input_dict_size = build_sequence_encode_decode_dicts(input_data)
+    output_encoding, output_decoding, output_dict_size = build_sequence_encode_decode_dicts(output_data)
+    params = {}
+    params[&#39;input_encoding&#39;] = input_encoding
+    params[&#39;input_decoding&#39;] = input_decoding
+    params[&#39;input_dict_size&#39;] = input_dict_size
+    params[&#39;output_encoding&#39;] = output_encoding
+    params[&#39;output_decoding&#39;] = output_decoding
+    params[&#39;output_dict_size&#39;] = output_dict_size
+    params[&#39;max_input_length&#39;] = max_lenghts[0]
+    params[&#39;max_output_length&#39;] = max_lenghts[1]
+
+    pickle.dump(params, open(params_path, &#39;wb&#39;))
+    return params</code></pre>
+</details>
+</dd>
+<dt id="txt2txt.txt2txt.build_sequence_encode_decode_dicts"><code class="name flex">
+<span>def <span class="ident">build_sequence_encode_decode_dicts</span></span>(<span>input_data)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Builds encoding and decoding dictionaries for given list of strings.</p>
+<p>Parameters:</p>
+<p>input_data (list): List of strings.</p>
+<p>Returns:</p>
+<p>encoding_dict (dict): Dictionary with chars as keys and corresponding integer encodings as values.</p>
+<p>decoding_dict (dict): Reverse of above dictionary.</p>
+<p>len(encoding_dict) + 2: +2 because of special start (1) and padding (0) chars we add to each sequence.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def build_sequence_encode_decode_dicts(input_data):
+    &#34;&#34;&#34;
+    Builds encoding and decoding dictionaries for given list of strings.
+
+    Parameters:
+
+    input_data (list): List of strings.
+
+    Returns:
+
+    encoding_dict (dict): Dictionary with chars as keys and corresponding integer encodings as values.
+
+    decoding_dict (dict): Reverse of above dictionary.
+
+    len(encoding_dict) + 2: +2 because of special start (1) and padding (0) chars we add to each sequence.
+
+    &#34;&#34;&#34;
+    encoding_dict = {}
+    decoding_dict = {}
+    for line in input_data:
+        for char in line:
+            if char not in encoding_dict:
+                # Using 2 + because our sequence start encoding is 1 and padding encoding is 0
+                encoding_dict[char] = 2 + len(encoding_dict)
+                decoding_dict[2 + len(decoding_dict)] = char
+    
+    return encoding_dict, decoding_dict, len(encoding_dict) + 2</code></pre>
+</details>
+</dd>
+<dt id="txt2txt.txt2txt.convert_training_data"><code class="name flex">
+<span>def <span class="ident">convert_training_data</span></span>(<span>input_data, output_data, params)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Encode training data.</p>
+<p>Parameters:</p>
+<p>input_data (list): List of input strings.</p>
+<p>output_data (list): List of output strings.</p>
+<p>params (dict): Generated params (encoding, decoding dicts ..).</p>
+<p>Returns:</p>
+<p>x, y: encoded inputs, outputs.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def convert_training_data(input_data, output_data, params):
+    &#34;&#34;&#34;
+    Encode training data.
+
+    Parameters:
+
+    input_data (list): List of input strings.
+
+    output_data (list): List of output strings.
+
+    params (dict): Generated params (encoding, decoding dicts ..).
+
+    Returns:
+    
+    x, y: encoded inputs, outputs.
+
+    &#34;&#34;&#34;
+    input_encoding = params[&#39;input_encoding&#39;]
+    input_decoding = params[&#39;input_decoding&#39;]
+    input_dict_size = params[&#39;input_dict_size&#39;]
+    output_encoding = params[&#39;output_encoding&#39;]
+    output_decoding = params[&#39;output_decoding&#39;]
+    output_dict_size = params[&#39;output_dict_size&#39;]
+    max_input_length = params[&#39;max_input_length&#39;]
+    max_output_length = params[&#39;max_output_length&#39;]
+
+    encoded_training_input = encode_sequences(input_encoding, input_data, max_input_length)
+    encoded_training_output = encode_sequences(output_encoding, output_data, max_output_length)
+    training_encoder_input = encoded_training_input
+    training_decoder_input = np.zeros_like(encoded_training_output)
+    training_decoder_input[:, 1:] = encoded_training_output[:,:-1]
+    training_decoder_input[:, 0] = char_start_encoding
+    training_decoder_output = np.eye(output_dict_size)[encoded_training_output.astype(&#39;int&#39;)]
+    x=[training_encoder_input, training_decoder_input]
+    y=[training_decoder_output]
+    return x, y</code></pre>
+</details>
+</dd>
+<dt id="txt2txt.txt2txt.decode_sequence"><code class="name flex">
+<span>def <span class="ident">decode_sequence</span></span>(<span>decoding_dict, sequence)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Decodes integers into string based on the decoding dict.</p>
+<p>Parameters:</p>
+<p>decoding_dict (dict): Dictionary with chars as values and corresponding integer encodings as keys.</p>
+<p>Returns:</p>
+<p>sequence (str): Decoded string.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def decode_sequence(decoding_dict, sequence):
+    &#34;&#34;&#34;
+    Decodes integers into string based on the decoding dict.
+
+    Parameters:
+
+    decoding_dict (dict): Dictionary with chars as values and corresponding integer encodings as keys.
+
+    Returns:
+
+    sequence (str): Decoded string.
+
+    &#34;&#34;&#34;
+    text = &#39;&#39;
+    for i in sequence:
+        if i == 0:
+            break
+        text += decoding_dict[i]
+    return text</code></pre>
+</details>
+</dd>
+<dt id="txt2txt.txt2txt.encode_sequences"><code class="name flex">
+<span>def <span class="ident">encode_sequences</span></span>(<span>encoding_dict, sequences, max_length)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Encodes given input strings into numpy arrays based on the encoding dicts supplied.</p>
+<p>Parameters:</p>
+<p>encoding_dict (dict): Dictionary with chars as keys and corresponding integer encodings as values.</p>
+<p>sequences (list): List of sequences (strings) to be encoded.</p>
+<p>max_length (int): Max length of input sequences. All sequences will be padded to this length to support batching.</p>
+<p>Returns:</p>
+<p>encoded_data (numpy array): Reverse of above dictionary.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def encode_sequences(encoding_dict, sequences, max_length):
+    &#34;&#34;&#34;
+    Encodes given input strings into numpy arrays based on the encoding dicts supplied.
+
+    Parameters:
+
+    encoding_dict (dict): Dictionary with chars as keys and corresponding integer encodings as values.
+
+    sequences (list): List of sequences (strings) to be encoded.
+
+    max_length (int): Max length of input sequences. All sequences will be padded to this length to support batching.
+
+    Returns:
+    
+    encoded_data (numpy array): Reverse of above dictionary.
+
+    &#34;&#34;&#34;
+    encoded_data = np.zeros(shape=(len(sequences), max_length))
+    for i in range(len(sequences)):
+        for j in range(min(len(sequences[i]), max_length)):
+            encoded_data[i][j] = encoding_dict[sequences[i][j]]
+    return encoded_data</code></pre>
+</details>
+</dd>
+<dt id="txt2txt.txt2txt.generate"><code class="name flex">
+<span>def <span class="ident">generate</span></span>(<span>texts, input_encoding_dict, model, max_input_length, max_output_length, beam_size, max_beams, min_cut_off_len, cut_off_ratio)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Main function for generating encoded output(s) for encoded input(s)</p>
+<p>Parameters:</p>
+<p>texts (list/str): List of input strings or single input string.</p>
+<p>input_encoding_dict (dict): Encoding dictionary generated from the input strings.</p>
+<p>model (kerasl model): Loaded keras model.</p>
+<p>max_input_length (int): Max length of input sequences. All sequences will be padded to this length to support batching.</p>
+<p>max_output_length (int): Max output length. Need to know when to stop decoding if no padding character comes.</p>
+<p>beam_size (int): Beam size at each prediction.</p>
+<p>max_beams (int): Maximum number of beams to be kept in memory.</p>
+<p>min_cut_off_len (int): Used in deciding when to stop decoding.</p>
+<p>cut_off_ratio (float): Used in deciding when to stop decoding.</p>
+<pre><code># min_cut_off_len = max(min_cut_off_len, cut_off_ratio*len(max(texts, key=len)))
+# min_cut_off_len = min(min_cut_off_len, max_output_length)
+</code></pre>
+<p>Returns:</p>
+<p>all_completed_beams (list): List of completed beams.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def generate(texts, input_encoding_dict, model, max_input_length, max_output_length, beam_size, max_beams, min_cut_off_len, cut_off_ratio):
+    &#34;&#34;&#34;
+    Main function for generating encoded output(s) for encoded input(s)
+
+    Parameters:
+
+    texts (list/str): List of input strings or single input string.
+
+    input_encoding_dict (dict): Encoding dictionary generated from the input strings.
+
+    model (kerasl model): Loaded keras model.
+
+    max_input_length (int): Max length of input sequences. All sequences will be padded to this length to support batching.
+
+    max_output_length (int): Max output length. Need to know when to stop decoding if no padding character comes.
+
+    beam_size (int): Beam size at each prediction.
+
+    max_beams (int): Maximum number of beams to be kept in memory.
+
+    min_cut_off_len (int): Used in deciding when to stop decoding.
+
+    cut_off_ratio (float): Used in deciding when to stop decoding.
+
+        # min_cut_off_len = max(min_cut_off_len, cut_off_ratio*len(max(texts, key=len)))
+        # min_cut_off_len = min(min_cut_off_len, max_output_length)
+
+    Returns:
+    
+    all_completed_beams (list): List of completed beams.
+
+    &#34;&#34;&#34;
+    if not isinstance(texts, list):
+        texts = [texts]
+
+    min_cut_off_len = max(min_cut_off_len, cut_off_ratio*len(max(texts, key=len)))
+    min_cut_off_len = min(min_cut_off_len, max_output_length)
+
+    all_completed_beams = {i:[] for i in range(len(texts))}
+    all_running_beams = {}
+    for i, text in enumerate(texts):
+        all_running_beams[i] = [[np.zeros(shape=(len(text), max_output_length)), [1]]]
+        all_running_beams[i][0][0][:,0] = char_start_encoding
+
+    
+    while len(all_running_beams) != 0:
+        for i in all_running_beams:
+            all_running_beams[i] = sorted(all_running_beams[i], key=lambda tup:np.prod(tup[1]), reverse=True)
+            all_running_beams[i] = all_running_beams[i][:max_beams]
+        
+        in_out_map = {}
+        batch_encoder_input = []
+        batch_decoder_input = []
+        t_c = 0
+        for text_i in all_running_beams:
+            if text_i not in in_out_map:
+                in_out_map[text_i] = []
+            for running_beam in all_running_beams[text_i]:
+                in_out_map[text_i].append(t_c)
+                t_c+=1
+                batch_encoder_input.append(texts[text_i])
+                batch_decoder_input.append(running_beam[0][0])
+
+
+        batch_encoder_input = encode_sequences(input_encoding_dict, batch_encoder_input, max_input_length)
+        batch_decoder_input = np.asarray(batch_decoder_input)
+        batch_predictions = model.predict([batch_encoder_input, batch_decoder_input])
+
+        t_c = 0
+        for text_i, t_cs in in_out_map.items():
+            temp_running_beams = []
+            for running_beam, probs in all_running_beams[text_i]:
+                if len(probs) &gt;= min_cut_off_len:
+                    all_completed_beams[text_i].append([running_beam[:,1:], probs])
+                else:
+                    prediction = batch_predictions[t_c]
+                    sorted_args = prediction.argsort()
+                    sorted_probs = np.sort(prediction)
+
+                    for i in range(1, beam_size+1):
+                        temp_running_beam = np.copy(running_beam)
+                        i = -1 * i
+                        ith_arg = sorted_args[:, i][len(probs)]
+                        ith_prob = sorted_probs[:, i][len(probs)]
+                        
+                        temp_running_beam[:, len(probs)] = ith_arg
+                        temp_running_beams.append([temp_running_beam, probs + [ith_prob]])
+
+                t_c+=1
+
+            all_running_beams[text_i] = [b for b in temp_running_beams]
+        
+        to_del = []
+        for i, v in all_running_beams.items():
+            if not v:
+                to_del.append(i)
+        
+        for i in to_del:
+            del all_running_beams[i]
+
+    return all_completed_beams</code></pre>
+</details>
+</dd>
+<dt id="txt2txt.txt2txt.generate_greedy"><code class="name flex">
+<span>def <span class="ident">generate_greedy</span></span>(<span>texts, input_encoding_dict, model, max_input_length, max_output_length)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Main function for generating output(s) for given input(s)</p>
+<p>Parameters:</p>
+<p>texts (list/str): List of input strings or single input string.</p>
+<p>input_encoding_dict (dict): Encoding dictionary generated from the input strings.</p>
+<p>model (kerasl model): Loaded keras model.</p>
+<p>max_input_length (int): Max length of input sequences. All sequences will be padded to this length to support batching.</p>
+<p>max_output_length (int): Max output length. Need to know when to stop decoding if no padding character comes.</p>
+<p>Returns:</p>
+<p>outputs (list): Generated outputs.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def generate_greedy(texts, input_encoding_dict, model, max_input_length, max_output_length):
+    &#34;&#34;&#34;
+    Main function for generating output(s) for given input(s)
+
+    Parameters:
+
+    texts (list/str): List of input strings or single input string.
+
+    input_encoding_dict (dict): Encoding dictionary generated from the input strings.
+
+    model (kerasl model): Loaded keras model.
+
+    max_input_length (int): Max length of input sequences. All sequences will be padded to this length to support batching.
+
+    max_output_length (int): Max output length. Need to know when to stop decoding if no padding character comes.
+
+    Returns:
+    
+    outputs (list): Generated outputs.
+
+    &#34;&#34;&#34;
+    if not isinstance(texts, list):
+        texts = [texts]
+
+    encoder_input = encode_sequences(input_encoding_dict, texts, max_input_length)
+    decoder_input = np.zeros(shape=(len(encoder_input), max_output_length))
+    decoder_input[:,0] = char_start_encoding
+    for i in range(1, max_output_length):
+        output = model.predict([encoder_input, decoder_input]).argmax(axis=2)
+        decoder_input[:,i] = output[:,i]
+        
+        if np.all(decoder_input[:,i] == char_padding_encoding):
+            return decoder_input[:,1:]
+
+    return decoder_input[:,1:]</code></pre>
+</details>
+</dd>
+<dt id="txt2txt.txt2txt.infer"><code class="name flex">
+<span>def <span class="ident">infer</span></span>(<span>texts, model, params, beam_size=3, max_beams=3, min_cut_off_len=10, cut_off_ratio=1.5)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Main function for generating output(s) for given input(s)</p>
+<p>Parameters:</p>
+<p>texts (list/str): List of input strings or single input string.</p>
+<p>model (kerasl model): Loaded keras model.</p>
+<p>params (dict): Loaded params generated by build_params</p>
+<p>beam_size (int): Beam size at each prediction.</p>
+<p>max_beams (int): Maximum number of beams to be kept in memory.</p>
+<p>min_cut_off_len (int): Used in deciding when to stop decoding.</p>
+<p>cut_off_ratio (float): Used in deciding when to stop decoding.</p>
+<pre><code># min_cut_off_len = max(min_cut_off_len, cut_off_ratio*len(max(texts, key=len)))
+# min_cut_off_len = min(min_cut_off_len, max_output_length)
+</code></pre>
+<p>Returns:</p>
+<p>outputs (list of dicts): Each dict has the sequence and probability.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def infer(texts, model, params, beam_size=3, max_beams=3, min_cut_off_len=10, cut_off_ratio=1.5):
+    &#34;&#34;&#34;
+    Main function for generating output(s) for given input(s)
+
+    Parameters:
+
+    texts (list/str): List of input strings or single input string.
+
+    model (kerasl model): Loaded keras model.
+
+    params (dict): Loaded params generated by build_params
+
+    beam_size (int): Beam size at each prediction.
+
+    max_beams (int): Maximum number of beams to be kept in memory.
+
+    min_cut_off_len (int): Used in deciding when to stop decoding.
+
+    cut_off_ratio (float): Used in deciding when to stop decoding.
+
+        # min_cut_off_len = max(min_cut_off_len, cut_off_ratio*len(max(texts, key=len)))
+        # min_cut_off_len = min(min_cut_off_len, max_output_length)
+
+    Returns:
+    
+    outputs (list of dicts): Each dict has the sequence and probability.
+
+    &#34;&#34;&#34;
+    if not isinstance(texts, list):
+        texts = [texts]
+
+    input_encoding_dict = params[&#39;input_encoding&#39;]
+    output_decoding_dict = params[&#39;output_decoding&#39;]
+    max_input_length = params[&#39;max_input_length&#39;]
+    max_output_length = params[&#39;max_output_length&#39;]
+
+    all_decoder_outputs = generate(texts, input_encoding_dict, model, max_input_length, max_output_length, beam_size, max_beams, min_cut_off_len, cut_off_ratio)
+    outputs = []
+
+    for i, decoder_outputs in all_decoder_outputs.items():
+        outputs.append([])
+        for decoder_output, probs in decoder_outputs:
+            outputs[-1].append({&#39;sequence&#39;: decode_sequence(output_decoding_dict, decoder_output[0]), &#39;prob&#39;: np.prod(probs)})
+
+    return outputs</code></pre>
+</details>
+</dd>
+<dt id="txt2txt.txt2txt.infer_greedy"><code class="name flex">
+<span>def <span class="ident">infer_greedy</span></span>(<span>texts, model, params)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Main function for generating output(s) for given input(s)</p>
+<p>Parameters:</p>
+<p>texts (list/str): List of input strings or single input string.</p>
+<p>model (kerasl model): Loaded keras model.</p>
+<p>params (dict): Loaded params generated by build_params</p>
+<p>Returns:</p>
+<p>outputs (list): Generated outputs.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def infer_greedy(texts, model, params):
+    &#34;&#34;&#34;
+    Main function for generating output(s) for given input(s)
+
+    Parameters:
+
+    texts (list/str): List of input strings or single input string.
+
+    model (kerasl model): Loaded keras model.
+
+    params (dict): Loaded params generated by build_params
+
+    Returns:
+    
+    outputs (list): Generated outputs.
+
+    &#34;&#34;&#34;
+    return_string = False
+    if not isinstance(texts, list):
+        return_string = True
+        texts = [texts]
+
+    input_encoding_dict = params[&#39;input_encoding&#39;]
+    output_decoding_dict = params[&#39;output_decoding&#39;]
+    max_input_length = params[&#39;max_input_length&#39;]
+    max_output_length = params[&#39;max_output_length&#39;]
+
+    decoder_output = generate_greedy(texts, input_encoding_dict, model, max_input_length, max_output_length)
+    if return_string:
+        return decode_sequence(output_decoding_dict, decoder_output[0])
+
+    return [decode_sequence(output_decoding_dict, i) for i in decoder_output]</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="txt2txt" href="index.html">txt2txt</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="txt2txt.txt2txt.build_model" href="#txt2txt.txt2txt.build_model">build_model</a></code></li>
+<li><code><a title="txt2txt.txt2txt.build_params" href="#txt2txt.txt2txt.build_params">build_params</a></code></li>
+<li><code><a title="txt2txt.txt2txt.build_sequence_encode_decode_dicts" href="#txt2txt.txt2txt.build_sequence_encode_decode_dicts">build_sequence_encode_decode_dicts</a></code></li>
+<li><code><a title="txt2txt.txt2txt.convert_training_data" href="#txt2txt.txt2txt.convert_training_data">convert_training_data</a></code></li>
+<li><code><a title="txt2txt.txt2txt.decode_sequence" href="#txt2txt.txt2txt.decode_sequence">decode_sequence</a></code></li>
+<li><code><a title="txt2txt.txt2txt.encode_sequences" href="#txt2txt.txt2txt.encode_sequences">encode_sequences</a></code></li>
+<li><code><a title="txt2txt.txt2txt.generate" href="#txt2txt.txt2txt.generate">generate</a></code></li>
+<li><code><a title="txt2txt.txt2txt.generate_greedy" href="#txt2txt.txt2txt.generate_greedy">generate_greedy</a></code></li>
+<li><code><a title="txt2txt.txt2txt.infer" href="#txt2txt.txt2txt.infer">infer</a></code></li>
+<li><code><a title="txt2txt.txt2txt.infer_greedy" href="#txt2txt.txt2txt.infer_greedy">infer_greedy</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.2</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>
