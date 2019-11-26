@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.2" />
+<title>deepsegment.train API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>deepsegment.train</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import random
+random.seed(42)
+
+import logging
+
+import tensorflow as tf
+
+try:
+    config = tf.ConfigProto()
+    config.gpu_options.allow_growth = True
+    session = tf.Session(config=config)
+except:
+    pass
+
+import seqtag_keras
+
+from seqtag_keras.models import BiLSTMCRF
+from seqtag_keras.utils import load_glove
+from seqtag_keras.trainer import Trainer
+from progressbar import progressbar
+
+from keras.callbacks import ModelCheckpoint, EarlyStopping
+from keras.optimizers import Adam
+
+import os
+import re
+import string
+import pickle
+import datetime
+
+from seqeval.metrics import f1_score
+
+def bad_sentence_generator(sent, remove_punctuation = None):
+    &#34;&#34;&#34;
+        Returns sentence with completely/ partially removed punctuation.
+
+        Parameters:
+        sent (str): Sentence on which the punctuation removal operation is performed.
+        
+        remove_punctuation (int): removing punctuation completely if remove_punctuation ==0 or ==1, removing punctuation till a randomly selected point if remove_punctuation ==2
+
+        Returns:
+        str: Sentence with modified punctuation
+
+    &#34;&#34;&#34;
+
+    if not remove_punctuation:
+        remove_punctuation = random.randint(0, 3)
+
+    break_point = random.randint(1, len(sent)-2)
+    lower_case = random.randint(0, 2)
+
+    if remove_punctuation &lt;= 1:
+        # removing punctuation completely if remove_punctuation ==0 or ==1
+        sent = re.sub(&#39;[&#39;+string.punctuation+&#39;]&#39;, &#39;&#39;, sent)
+    
+    elif remove_punctuation == 2:
+        # removing punctuation till a randomly selected point if remove_punctuation ==2
+        if random.randint(0,1) == 0:
+            sent = re.sub(&#39;[&#39;+string.punctuation+&#39;]&#39;, &#39;&#39;, sent[:break_point]) + sent[break_point:]
+        # removing punctuation after a randomly selected point if remove_punctuation ==2        
+        else:
+            sent = sent[:break_point] + re.sub(&#39;[&#39;+string.punctuation+&#39;]&#39;, &#39;&#39;, sent[break_point:])    
+    
+    if lower_case &lt;= 1:
+        # lower casing sentence 
+        sent = sent.lower()
+    
+    return sent
+
+def generate_data(lines, max_sents_per_example=6, n_examples=1000):
+    &#34;&#34;&#34;
+        Generates training data for deepsegment from list of sentences.
+
+        Parameters:
+        lines (list): Base sentences for data generation.
+
+        max_sents_per_example (int): Maximum number of sentences to be combined to form a single paragraph.
+        
+        n_examples (int): Number of training examples to be generated.
+        
+        Returns:
+        list, list: Training data and corresponding labels in BIOU format.
+
+    &#34;&#34;&#34;
+    x, y = [], []
+    
+    for current_i in progressbar(range(n_examples)):
+        x.append([])
+        y.append([])
+
+        chosen_lines = []
+        for _ in range(random.randint(1, max_sents_per_example)):
+            chosen_lines.append(random.choice(lines))
+        
+        chosen_lines = [bad_sentence_generator(line, remove_punctuation=random.randint(0, 3)) for line in chosen_lines]
+        
+        for line in chosen_lines:
+            words = line.strip().split()
+            for word_i, word in enumerate(words):
+                x[-1].append(word)
+                label = &#39;O&#39;
+                if word_i == 0:
+                    label = &#39;B-sent&#39;
+                y[-1].append(label)
+    
+    return x, y
+
+def train(x, y, vx, vy, epochs, batch_size, save_folder, glove_path):
+    &#34;&#34;&#34;
+        Trains a deepsegment model.
+
+        Parameters:
+        x (list): x generated from generate_data
+
+        y (list): y generated from generate_data
+
+        vx (list): x generated from generate_data
+
+        vy (list): y generated from generate_data
+
+
+        epochs (int): Max number of epochs.
+        
+        batch_size (int): batch_size
+
+        save_folder (str): path for the directory where checkpoints should be saved.
+
+        glove_path (str): path to 100d word vectors.
+        
+
+    &#34;&#34;&#34;
+
+    embeddings = load_glove(glove_path)
+    
+    checkpoint_path = os.path.join(save_folder, &#39;checkpoint&#39;)
+    final_weights_path = os.path.join(save_folder, &#39;final_weights&#39;)
+    params_path = os.path.join(save_folder, &#39;params&#39;)
+    utils_path = os.path.join(save_folder, &#39;utils&#39;)    
+
+    checkpoint = ModelCheckpoint(checkpoint_path, verbose=1, save_best_only=True, mode=&#39;max&#39;, monitor=&#39;f1&#39;)
+    earlystop = EarlyStopping(patience=3, monitor=&#39;f1&#39;, mode=&#39;max&#39;)
+
+    model = seqtag_keras.Sequence(embeddings=embeddings)
+    
+    model.fit(x, y, x_valid=vx, y_valid=vy, epochs=epochs, batch_size=batch_size, callbacks=[checkpoint, earlystop])
+
+    model.save(final_weights_path, params_path, utils_path)
+
+
+lang_code_mapping = {
+    &#39;english&#39;: &#39;en&#39;,
+    &#39;french&#39;: &#39;fr&#39;,
+    &#39;italian&#39;: &#39;it&#39;
+}
+
+def finetune(lang_code, x, y, vx, vy, name=None, epochs=5, batch_size=16, lr=0.0001):
+    if not name:
+        name = str(datetime.datetime.now()).split()
+        name = &#39;-&#39;.join(name)
+        print(&#39;Name not provided. The checkpoint will be named checkpoint_&#39; + name)
+
+    if lang_code in lang_code_mapping:
+        lang_code = lang_code_mapping[lang_code]
+
+    home = os.path.expanduser(&#34;~&#34;)
+    lang_path = os.path.join(home, &#39;.DeepSegment_&#39; + lang_code)
+    checkpoint_path = os.path.join(lang_path, &#39;checkpoint&#39;)
+    utils_path = os.path.join(lang_path, &#39;utils&#39;)
+    params_path = os.path.join(lang_path, &#39;params&#39;)
+
+    p = pickle.load(open(utils_path, &#39;rb&#39;))
+
+    model = BiLSTMCRF(char_vocab_size=p.char_vocab_size,
+                          word_vocab_size=p.word_vocab_size,
+                          num_labels=p.label_size,
+                          word_embedding_dim=100,
+                          char_embedding_dim=25,
+                          word_lstm_size=100,
+                          char_lstm_size=25,
+                          fc_dim=100,
+                          dropout=0.2,
+                          embeddings=None,
+                          use_char=True,
+                          use_crf=True)
+    
+    model, loss = model.build()
+    model.compile(loss=loss, optimizer=Adam(learning_rate=lr))
+
+    model.load_weights(checkpoint_path)
+
+    temp_vx = p.transform(vx)
+    lengths = map(len, vy)
+    y_pred = model.predict(temp_vx)
+    y_pred = p.inverse_transform(y_pred, lengths)
+    orig_score = f1_score(vy, y_pred)
+    print(&#39;Scores before finetuning: &#39;)
+    print(orig_score)
+    temp_vx = None
+    del temp_vx
+
+    trainer = Trainer(model, preprocessor=p)
+    
+    checkpoint_path = checkpoint_path + &#39;_&#39; + name
+    checkpoint = ModelCheckpoint(checkpoint_path, verbose=1, save_best_only=True, mode=&#39;max&#39;, monitor=&#39;f1&#39;)
+    earlystop = EarlyStopping(patience=3, monitor=&#39;f1&#39;, mode=&#39;max&#39;)
+
+    trainer.train(x, y, vx, vy,
+                      epochs=epochs, batch_size=batch_size,
+                      verbose=1, callbacks=[checkpoint, earlystop],
+                      shuffle=True)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="deepsegment.train.bad_sentence_generator"><code class="name flex">
+<span>def <span class="ident">bad_sentence_generator</span></span>(<span>sent, remove_punctuation=None)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Returns sentence with completely/ partially removed punctuation.</p>
+<p>Parameters:
+sent (str): Sentence on which the punctuation removal operation is performed.</p>
+<p>remove_punctuation (int): removing punctuation completely if remove_punctuation ==0 or ==1, removing punctuation till a randomly selected point if remove_punctuation ==2</p>
+<p>Returns:
+str: Sentence with modified punctuation</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def bad_sentence_generator(sent, remove_punctuation = None):
+    &#34;&#34;&#34;
+        Returns sentence with completely/ partially removed punctuation.
+
+        Parameters:
+        sent (str): Sentence on which the punctuation removal operation is performed.
+        
+        remove_punctuation (int): removing punctuation completely if remove_punctuation ==0 or ==1, removing punctuation till a randomly selected point if remove_punctuation ==2
+
+        Returns:
+        str: Sentence with modified punctuation
+
+    &#34;&#34;&#34;
+
+    if not remove_punctuation:
+        remove_punctuation = random.randint(0, 3)
+
+    break_point = random.randint(1, len(sent)-2)
+    lower_case = random.randint(0, 2)
+
+    if remove_punctuation &lt;= 1:
+        # removing punctuation completely if remove_punctuation ==0 or ==1
+        sent = re.sub(&#39;[&#39;+string.punctuation+&#39;]&#39;, &#39;&#39;, sent)
+    
+    elif remove_punctuation == 2:
+        # removing punctuation till a randomly selected point if remove_punctuation ==2
+        if random.randint(0,1) == 0:
+            sent = re.sub(&#39;[&#39;+string.punctuation+&#39;]&#39;, &#39;&#39;, sent[:break_point]) + sent[break_point:]
+        # removing punctuation after a randomly selected point if remove_punctuation ==2        
+        else:
+            sent = sent[:break_point] + re.sub(&#39;[&#39;+string.punctuation+&#39;]&#39;, &#39;&#39;, sent[break_point:])    
+    
+    if lower_case &lt;= 1:
+        # lower casing sentence 
+        sent = sent.lower()
+    
+    return sent</code></pre>
+</details>
+</dd>
+<dt id="deepsegment.train.finetune"><code class="name flex">
+<span>def <span class="ident">finetune</span></span>(<span>lang_code, x, y, vx, vy, name=None, epochs=5, batch_size=16, lr=0.0001)</span>
+</code></dt>
+<dd>
+<section class="desc"></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def finetune(lang_code, x, y, vx, vy, name=None, epochs=5, batch_size=16, lr=0.0001):
+    if not name:
+        name = str(datetime.datetime.now()).split()
+        name = &#39;-&#39;.join(name)
+        print(&#39;Name not provided. The checkpoint will be named checkpoint_&#39; + name)
+
+    if lang_code in lang_code_mapping:
+        lang_code = lang_code_mapping[lang_code]
+
+    home = os.path.expanduser(&#34;~&#34;)
+    lang_path = os.path.join(home, &#39;.DeepSegment_&#39; + lang_code)
+    checkpoint_path = os.path.join(lang_path, &#39;checkpoint&#39;)
+    utils_path = os.path.join(lang_path, &#39;utils&#39;)
+    params_path = os.path.join(lang_path, &#39;params&#39;)
+
+    p = pickle.load(open(utils_path, &#39;rb&#39;))
+
+    model = BiLSTMCRF(char_vocab_size=p.char_vocab_size,
+                          word_vocab_size=p.word_vocab_size,
+                          num_labels=p.label_size,
+                          word_embedding_dim=100,
+                          char_embedding_dim=25,
+                          word_lstm_size=100,
+                          char_lstm_size=25,
+                          fc_dim=100,
+                          dropout=0.2,
+                          embeddings=None,
+                          use_char=True,
+                          use_crf=True)
+    
+    model, loss = model.build()
+    model.compile(loss=loss, optimizer=Adam(learning_rate=lr))
+
+    model.load_weights(checkpoint_path)
+
+    temp_vx = p.transform(vx)
+    lengths = map(len, vy)
+    y_pred = model.predict(temp_vx)
+    y_pred = p.inverse_transform(y_pred, lengths)
+    orig_score = f1_score(vy, y_pred)
+    print(&#39;Scores before finetuning: &#39;)
+    print(orig_score)
+    temp_vx = None
+    del temp_vx
+
+    trainer = Trainer(model, preprocessor=p)
+    
+    checkpoint_path = checkpoint_path + &#39;_&#39; + name
+    checkpoint = ModelCheckpoint(checkpoint_path, verbose=1, save_best_only=True, mode=&#39;max&#39;, monitor=&#39;f1&#39;)
+    earlystop = EarlyStopping(patience=3, monitor=&#39;f1&#39;, mode=&#39;max&#39;)
+
+    trainer.train(x, y, vx, vy,
+                      epochs=epochs, batch_size=batch_size,
+                      verbose=1, callbacks=[checkpoint, earlystop],
+                      shuffle=True)</code></pre>
+</details>
+</dd>
+<dt id="deepsegment.train.generate_data"><code class="name flex">
+<span>def <span class="ident">generate_data</span></span>(<span>lines, max_sents_per_example=6, n_examples=1000)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Generates training data for deepsegment from list of sentences.</p>
+<p>Parameters:
+lines (list): Base sentences for data generation.</p>
+<p>max_sents_per_example (int): Maximum number of sentences to be combined to form a single paragraph.</p>
+<p>n_examples (int): Number of training examples to be generated.</p>
+<p>Returns:
+list, list: Training data and corresponding labels in BIOU format.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def generate_data(lines, max_sents_per_example=6, n_examples=1000):
+    &#34;&#34;&#34;
+        Generates training data for deepsegment from list of sentences.
+
+        Parameters:
+        lines (list): Base sentences for data generation.
+
+        max_sents_per_example (int): Maximum number of sentences to be combined to form a single paragraph.
+        
+        n_examples (int): Number of training examples to be generated.
+        
+        Returns:
+        list, list: Training data and corresponding labels in BIOU format.
+
+    &#34;&#34;&#34;
+    x, y = [], []
+    
+    for current_i in progressbar(range(n_examples)):
+        x.append([])
+        y.append([])
+
+        chosen_lines = []
+        for _ in range(random.randint(1, max_sents_per_example)):
+            chosen_lines.append(random.choice(lines))
+        
+        chosen_lines = [bad_sentence_generator(line, remove_punctuation=random.randint(0, 3)) for line in chosen_lines]
+        
+        for line in chosen_lines:
+            words = line.strip().split()
+            for word_i, word in enumerate(words):
+                x[-1].append(word)
+                label = &#39;O&#39;
+                if word_i == 0:
+                    label = &#39;B-sent&#39;
+                y[-1].append(label)
+    
+    return x, y</code></pre>
+</details>
+</dd>
+<dt id="deepsegment.train.train"><code class="name flex">
+<span>def <span class="ident">train</span></span>(<span>x, y, vx, vy, epochs, batch_size, save_folder, glove_path)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Trains a deepsegment model.</p>
+<p>Parameters:
+x (list): x generated from generate_data</p>
+<p>y (list): y generated from generate_data</p>
+<p>vx (list): x generated from generate_data</p>
+<p>vy (list): y generated from generate_data</p>
+<p>epochs (int): Max number of epochs.</p>
+<p>batch_size (int): batch_size</p>
+<p>save_folder (str): path for the directory where checkpoints should be saved.</p>
+<p>glove_path (str): path to 100d word vectors.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def train(x, y, vx, vy, epochs, batch_size, save_folder, glove_path):
+    &#34;&#34;&#34;
+        Trains a deepsegment model.
+
+        Parameters:
+        x (list): x generated from generate_data
+
+        y (list): y generated from generate_data
+
+        vx (list): x generated from generate_data
+
+        vy (list): y generated from generate_data
+
+
+        epochs (int): Max number of epochs.
+        
+        batch_size (int): batch_size
+
+        save_folder (str): path for the directory where checkpoints should be saved.
+
+        glove_path (str): path to 100d word vectors.
+        
+
+    &#34;&#34;&#34;
+
+    embeddings = load_glove(glove_path)
+    
+    checkpoint_path = os.path.join(save_folder, &#39;checkpoint&#39;)
+    final_weights_path = os.path.join(save_folder, &#39;final_weights&#39;)
+    params_path = os.path.join(save_folder, &#39;params&#39;)
+    utils_path = os.path.join(save_folder, &#39;utils&#39;)    
+
+    checkpoint = ModelCheckpoint(checkpoint_path, verbose=1, save_best_only=True, mode=&#39;max&#39;, monitor=&#39;f1&#39;)
+    earlystop = EarlyStopping(patience=3, monitor=&#39;f1&#39;, mode=&#39;max&#39;)
+
+    model = seqtag_keras.Sequence(embeddings=embeddings)
+    
+    model.fit(x, y, x_valid=vx, y_valid=vy, epochs=epochs, batch_size=batch_size, callbacks=[checkpoint, earlystop])
+
+    model.save(final_weights_path, params_path, utils_path)</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="deepsegment" href="index.html">deepsegment</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="deepsegment.train.bad_sentence_generator" href="#deepsegment.train.bad_sentence_generator">bad_sentence_generator</a></code></li>
+<li><code><a title="deepsegment.train.finetune" href="#deepsegment.train.finetune">finetune</a></code></li>
+<li><code><a title="deepsegment.train.generate_data" href="#deepsegment.train.generate_data">generate_data</a></code></li>
+<li><code><a title="deepsegment.train.train" href="#deepsegment.train.train">train</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.2</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

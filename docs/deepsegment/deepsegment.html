@@ -1,0 +1,773 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.2" />
+<title>deepsegment.deepsegment API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>deepsegment.deepsegment</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from keras.models import model_from_json
+import numpy as np
+from seqtag_keras.layers import CRF
+import pydload
+import pickle
+import os
+import logging
+import time
+import glob
+
+
+is_tfserving_installed = True
+
+try:
+    import grpc
+    import tensorflow as tf
+    from tensorflow.python.saved_model import signature_constants
+    from tensorflow_serving.apis import predict_pb2
+    from tensorflow_serving.apis import prediction_service_pb2_grpc
+except Exception as ex:
+    is_tfserving_installed = False
+    logging.warn(&#34;Tensorflow serving is not installed. Cannot be used with tesnorflow serving docker images.&#34;)
+    logging.warn(&#34;Run pip install tensorflow-serving-api==1.12.0 if you want to use with tf serving.&#34;)
+
+model_links = {
+            &#39;en&#39;: {
+                    &#39;checkpoint&#39;: &#39;https://github.com/bedapudi6788/deepsegment/releases/download/v1.0.2/en_checkpoint&#39;,
+                    &#39;utils&#39;: &#39;https://github.com/bedapudi6788/deepsegment/releases/download/v1.0.2/en_utils&#39;,
+                    &#39;params&#39;: &#39;https://github.com/bedapudi6788/deepsegment/releases/download/v1.0.2/en_params&#39;
+                },
+            &#39;fr&#39;: {
+                    &#39;checkpoint&#39;: &#39;https://github.com/bedapudi6788/deepsegment/releases/download/v1.0.2/fr_checkpoint&#39;,
+                    &#39;utils&#39;: &#39;https://github.com/bedapudi6788/deepsegment/releases/download/v1.0.2/fr_utils&#39;,
+                    &#39;params&#39;: &#39;https://github.com/bedapudi6788/deepsegment/releases/download/v1.0.2/fr_params&#39;
+            },
+            &#39;it&#39;: {
+                    &#39;checkpoint&#39;: &#39;https://github.com/bedapudi6788/deepsegment/releases/download/v1.0.2/it_checkpoint&#39;,
+                    &#39;utils&#39;: &#39;https://github.com/bedapudi6788/deepsegment/releases/download/v1.0.2/it_utils&#39;,
+                    &#39;params&#39;: &#39;https://github.com/bedapudi6788/deepsegment/releases/download/v1.0.2/it_params&#39;
+            }
+        }
+
+
+lang_code_mapping = {
+    &#39;english&#39;: &#39;en&#39;,
+    &#39;french&#39;: &#39;fr&#39;,
+    &#39;italian&#39;: &#39;it&#39;
+}
+
+def chunk(l, n):
+    &#34;&#34;&#34;
+    Chunk a list l into chunks of equal size n
+
+    Parameters:
+    l (list): List (of any items) to be chunked.
+    n (int): size of each chunk.
+
+    Returns:
+    list: Return list os lists (chunks)
+
+    &#34;&#34;&#34;
+    chunked_l = []
+    for i in range(0, len(l), n):
+        chunked_l.append(l[i:i + n])
+    
+    if not chunked_l:
+        chunked_l = [l]
+
+    return chunked_l
+
+def predict_response_to_array(response, output_tensor_name):
+    &#34;&#34;&#34;
+    Convert response from tf-serving to np array (keras model.predict format)
+    &#34;&#34;&#34;
+    dims = response.outputs[output_tensor_name].tensor_shape.dim
+    shape = tuple(d.size for d in dims)
+    return np.reshape(response.outputs[output_tensor_name].float_val, shape)
+
+def get_tf_serving_respone(seqtag_model, x):
+    &#34;&#34;&#34;
+    Make GRPC call to tfserving server and read it&#39;s output.
+
+    &#34;&#34;&#34;
+    channel = grpc.insecure_channel(&#34;localhost:8500&#34;)
+    stub = prediction_service_pb2_grpc.PredictionServiceStub(channel)
+    request = predict_pb2.PredictRequest()
+    request.model_spec.name = seqtag_model
+    request.model_spec.signature_name = signature_constants.DEFAULT_SERVING_SIGNATURE_DEF_KEY
+    request.inputs[&#34;word-input&#34;].CopyFrom(tf.contrib.util.make_tensor_proto(x[0], dtype=&#34;int32&#34;, shape=None))
+    request.inputs[&#34;char-input&#34;].CopyFrom(tf.contrib.util.make_tensor_proto(x[1], dtype=&#34;int32&#34;, shape=None))
+    response =stub.Predict(request, 20)
+    preds = predict_response_to_array(response, &#34;prediction&#34;)
+    preds = [np.argmax(_tags, axis=1).tolist() for _tags in preds]
+    return preds
+
+class DeepSegment():
+    seqtag_model = None
+    data_converter = None
+    def __init__(self, lang_code=&#39;en&#39;, checkpoint_path=None, params_path=None, utils_path=None, tf_serving=False, checkpoint_name=None):
+        &#34;&#34;&#34;
+        Initialize deepsegment
+
+        Parameters:
+
+        lang_code (str): Name or code of the language. (default is english)
+
+        checkpoint_path (str): If using with custom models, pass the custom model checkpoint path and set lang_code=None
+
+        params_path (str): See checkpoint_path.
+
+        utils_path (str): See checkpoint_path.
+
+        tf_serving (bool): If using with tf_serving docker image, set to True.
+
+        checkpoint_name (str): If using with finetuned models use this.
+
+        &#34;&#34;&#34;
+        if lang_code:
+            if lang_code not in model_links and lang_code in lang_code_mapping:
+                lang_code = lang_code_mapping[lang_code]
+                
+            if lang_code not in model_links:
+                print(&#34;DeepSegment doesn&#39;t support &#39;&#34; + lang_code + &#34;&#39; yet.&#34;)
+                print(&#34;Please raise a issue at https://github.com/bedapudi6788/deepsegment to add this language into future checklist.&#34;)
+                return None
+
+            # loading the model
+            home = os.path.expanduser(&#34;~&#34;)
+            lang_path = os.path.join(home, &#39;.DeepSegment_&#39; + lang_code)
+
+            checkpoint_path = os.path.join(lang_path, &#39;checkpoint&#39;)
+
+            if checkpoint_name:
+                if not checkpoint_name.startswith(&#39;checkpoint_&#39;):
+                    checkpoint_name = &#39;checkpoint_&#39; + checkpoint_name
+
+                finetuned_checkpoint_path = os.path.join(lang_path, checkpoint_name)
+                if not os.path.exists(finetuned_checkpoint_path):
+                    print(&#39;There is no file present at&#39;, finetuned_checkpoint_path)
+                    print(&#39;All the files present at that path are:&#39;, glob.glob(lang_path + &#39;/*&#39;))
+                    print(&#39;Loading the default checkpoint&#39;)
+                else:
+                    checkpoint_path = finetuned_checkpoint_path
+            else:
+                other_checkpoints = glob.glob(checkpoint_path + &#39;_*&#39;)
+                if other_checkpoints:
+                    other_checkpoints = [i.split(&#39;/&#39;)[-1] for i in other_checkpoints]
+                    print(&#39;\n==============================================================================================================&#39;)
+                    print(&#34;NOTE: There are multiple checkpoints present for this language.&#34;)
+                    print(other_checkpoints)
+                    print(&#39;Default checkpoint is currently being used.&#39;)
+                    print(&#39;To use a different checkpoint, use DeepSegment(&#34;en&#34;, checkpoint_name=name_of_the_checkpoint)&#39;)
+                    print(&#39;==============================================================================================================\n&#39;)
+
+            utils_path = os.path.join(lang_path, &#39;utils&#39;)
+            params_path = os.path.join(lang_path, &#39;params&#39;)
+            
+            if not os.path.exists(lang_path):
+                os.mkdir(lang_path)
+
+            if not os.path.exists(checkpoint_path) and not tf_serving:
+                print(&#39;Downloading checkpoint&#39;, model_links[lang_code][&#39;checkpoint&#39;], &#39;to&#39;, checkpoint_path)
+                pydload.dload(url=model_links[lang_code][&#39;checkpoint&#39;], save_to_path=checkpoint_path, max_time=None)
+
+            if not os.path.exists(utils_path):
+                print(&#39;Downloading preprocessing utils&#39;, model_links[lang_code][&#39;utils&#39;], &#39;to&#39;, utils_path)
+                pydload.dload(url=model_links[lang_code][&#39;utils&#39;], save_to_path=utils_path, max_time=None)
+
+            if not os.path.exists(params_path):
+                print(&#39;Downloading model params&#39;, model_links[lang_code][&#39;utils&#39;], &#39;to&#39;, params_path)
+                pydload.dload(url=model_links[lang_code][&#39;params&#39;], save_to_path=params_path, max_time=None)
+
+        if not tf_serving:
+            DeepSegment.seqtag_model = model_from_json(open(params_path).read(), custom_objects={&#39;CRF&#39;: CRF})
+            DeepSegment.seqtag_model.load_weights(checkpoint_path)
+        
+        elif tf_serving:
+            if not is_tfserving_installed:
+                logging.exception(&#34;Tensorflow serving is not installed. Cannot be used with tesnorflow serving docker images.&#34;)
+                logging.exception(&#34;Run pip install tensorflow-serving-api==1.12.0 if you want to use with tf serving.&#34;)
+                exit()
+            DeepSegment.seqtag_model = &#39;deepsegment_&#39; + lang_code
+
+        DeepSegment.data_converter = pickle.load(open(utils_path, &#39;rb&#39;))
+
+    def segment(self, sents):
+        &#34;&#34;&#34;
+        segment a list of sentences or single sentence
+
+        Parameters:
+        sents (list or str): List (or single) of sentences to be segmented.
+
+        Returns:
+        list: Return list or list of lists of segmented sentenes.
+
+        &#34;&#34;&#34;
+        if not DeepSegment.seqtag_model:
+            print(&#39;Please load the model first&#39;)
+
+        string_output = False
+        if not isinstance(sents, list):
+            logging.warn(&#34;Batch input strings for faster inference.&#34;)
+            string_output = True
+            sents = [sents]
+
+        sents = [sent.strip().split() for sent in sents]
+
+        max_len = len(max(sents, key=len))
+        if max_len &gt;= 40:
+            logging.warn(&#34;Consider using segment_long for longer sentences.&#34;)
+
+        encoded_sents = DeepSegment.data_converter.transform(sents)
+        
+        if not isinstance(DeepSegment.seqtag_model, type(&#39;&#39;)):
+            all_tags = DeepSegment.seqtag_model.predict(encoded_sents)
+            all_tags = [np.argmax(_tags, axis=1).tolist() for _tags in all_tags]
+        
+        else:
+            all_tags = get_tf_serving_respone(DeepSegment.seqtag_model, encoded_sents)
+
+        segmented_sentences = [[] for _ in sents]
+        for sent_index, (sent, tags) in enumerate(zip(sents, all_tags)):
+            segmented_sent = []
+            for i, (word, tag) in enumerate(zip(sent, tags)):
+                if tag == 2 and i &gt; 0 and segmented_sent:
+                    segmented_sent = &#39; &#39;.join(segmented_sent)
+                    segmented_sentences[sent_index].append(segmented_sent)
+                    segmented_sent = []
+
+                segmented_sent.append(word)
+            if segmented_sent:
+                segmented_sentences[sent_index].append(&#39; &#39;.join(segmented_sent))
+
+        if string_output:
+            return segmented_sentences[0]
+            
+        return segmented_sentences
+    
+    def segment_long(self, sent, n_window=None):
+        &#34;&#34;&#34;
+        Segment a longer text
+
+        Parameters:
+        sent (str): Input text.
+        n_window (int): window size (words) for iterative segmentation.
+
+        Returns:
+        list: Return list of sentences.
+        &#34;&#34;&#34;
+        if not n_window:
+            logging.warn(&#34;Using default n_window=10. Set this parameter based on your data.&#34;)
+            n_window = 10
+        
+        if isinstance(sent, list):
+            logging.error(&#34;segment_long doesn&#39;t support batching as of now. Batching will be added in a future release.&#34;)
+            return None
+
+        segmented = []
+        sent = sent.split()
+        prefix = []
+        while sent:
+            current_n_window = n_window - len(prefix)
+            if current_n_window &lt;= 0:
+                current_n_window = n_window
+
+            window = prefix + sent[:current_n_window]
+            sent = sent[current_n_window:]
+            segmented_window = self.segment([&#39; &#39;.join(window)])[0]
+            segmented += segmented_window[:-1]
+            prefix = segmented_window[-1].split()
+        
+        if prefix:
+            segmented.append(&#39; &#39;.join(prefix))
+
+        return segmented</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="deepsegment.deepsegment.chunk"><code class="name flex">
+<span>def <span class="ident">chunk</span></span>(<span>l, n)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Chunk a list l into chunks of equal size n</p>
+<p>Parameters:
+l (list): List (of any items) to be chunked.
+n (int): size of each chunk.</p>
+<p>Returns:
+list: Return list os lists (chunks)</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def chunk(l, n):
+    &#34;&#34;&#34;
+    Chunk a list l into chunks of equal size n
+
+    Parameters:
+    l (list): List (of any items) to be chunked.
+    n (int): size of each chunk.
+
+    Returns:
+    list: Return list os lists (chunks)
+
+    &#34;&#34;&#34;
+    chunked_l = []
+    for i in range(0, len(l), n):
+        chunked_l.append(l[i:i + n])
+    
+    if not chunked_l:
+        chunked_l = [l]
+
+    return chunked_l</code></pre>
+</details>
+</dd>
+<dt id="deepsegment.deepsegment.get_tf_serving_respone"><code class="name flex">
+<span>def <span class="ident">get_tf_serving_respone</span></span>(<span>seqtag_model, x)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Make GRPC call to tfserving server and read it's output.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_tf_serving_respone(seqtag_model, x):
+    &#34;&#34;&#34;
+    Make GRPC call to tfserving server and read it&#39;s output.
+
+    &#34;&#34;&#34;
+    channel = grpc.insecure_channel(&#34;localhost:8500&#34;)
+    stub = prediction_service_pb2_grpc.PredictionServiceStub(channel)
+    request = predict_pb2.PredictRequest()
+    request.model_spec.name = seqtag_model
+    request.model_spec.signature_name = signature_constants.DEFAULT_SERVING_SIGNATURE_DEF_KEY
+    request.inputs[&#34;word-input&#34;].CopyFrom(tf.contrib.util.make_tensor_proto(x[0], dtype=&#34;int32&#34;, shape=None))
+    request.inputs[&#34;char-input&#34;].CopyFrom(tf.contrib.util.make_tensor_proto(x[1], dtype=&#34;int32&#34;, shape=None))
+    response =stub.Predict(request, 20)
+    preds = predict_response_to_array(response, &#34;prediction&#34;)
+    preds = [np.argmax(_tags, axis=1).tolist() for _tags in preds]
+    return preds</code></pre>
+</details>
+</dd>
+<dt id="deepsegment.deepsegment.predict_response_to_array"><code class="name flex">
+<span>def <span class="ident">predict_response_to_array</span></span>(<span>response, output_tensor_name)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Convert response from tf-serving to np array (keras model.predict format)</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def predict_response_to_array(response, output_tensor_name):
+    &#34;&#34;&#34;
+    Convert response from tf-serving to np array (keras model.predict format)
+    &#34;&#34;&#34;
+    dims = response.outputs[output_tensor_name].tensor_shape.dim
+    shape = tuple(d.size for d in dims)
+    return np.reshape(response.outputs[output_tensor_name].float_val, shape)</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="deepsegment.deepsegment.DeepSegment"><code class="flex name class">
+<span>class <span class="ident">DeepSegment</span></span>
+<span>(</span><span>lang_code='en', checkpoint_path=None, params_path=None, utils_path=None, tf_serving=False, checkpoint_name=None)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Initialize deepsegment</p>
+<p>Parameters:</p>
+<p>lang_code (str): Name or code of the language. (default is english)</p>
+<p>checkpoint_path (str): If using with custom models, pass the custom model checkpoint path and set lang_code=None</p>
+<p>params_path (str): See checkpoint_path.</p>
+<p>utils_path (str): See checkpoint_path.</p>
+<p>tf_serving (bool): If using with tf_serving docker image, set to True.</p>
+<p>checkpoint_name (str): If using with finetuned models use this.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class DeepSegment():
+    seqtag_model = None
+    data_converter = None
+    def __init__(self, lang_code=&#39;en&#39;, checkpoint_path=None, params_path=None, utils_path=None, tf_serving=False, checkpoint_name=None):
+        &#34;&#34;&#34;
+        Initialize deepsegment
+
+        Parameters:
+
+        lang_code (str): Name or code of the language. (default is english)
+
+        checkpoint_path (str): If using with custom models, pass the custom model checkpoint path and set lang_code=None
+
+        params_path (str): See checkpoint_path.
+
+        utils_path (str): See checkpoint_path.
+
+        tf_serving (bool): If using with tf_serving docker image, set to True.
+
+        checkpoint_name (str): If using with finetuned models use this.
+
+        &#34;&#34;&#34;
+        if lang_code:
+            if lang_code not in model_links and lang_code in lang_code_mapping:
+                lang_code = lang_code_mapping[lang_code]
+                
+            if lang_code not in model_links:
+                print(&#34;DeepSegment doesn&#39;t support &#39;&#34; + lang_code + &#34;&#39; yet.&#34;)
+                print(&#34;Please raise a issue at https://github.com/bedapudi6788/deepsegment to add this language into future checklist.&#34;)
+                return None
+
+            # loading the model
+            home = os.path.expanduser(&#34;~&#34;)
+            lang_path = os.path.join(home, &#39;.DeepSegment_&#39; + lang_code)
+
+            checkpoint_path = os.path.join(lang_path, &#39;checkpoint&#39;)
+
+            if checkpoint_name:
+                if not checkpoint_name.startswith(&#39;checkpoint_&#39;):
+                    checkpoint_name = &#39;checkpoint_&#39; + checkpoint_name
+
+                finetuned_checkpoint_path = os.path.join(lang_path, checkpoint_name)
+                if not os.path.exists(finetuned_checkpoint_path):
+                    print(&#39;There is no file present at&#39;, finetuned_checkpoint_path)
+                    print(&#39;All the files present at that path are:&#39;, glob.glob(lang_path + &#39;/*&#39;))
+                    print(&#39;Loading the default checkpoint&#39;)
+                else:
+                    checkpoint_path = finetuned_checkpoint_path
+            else:
+                other_checkpoints = glob.glob(checkpoint_path + &#39;_*&#39;)
+                if other_checkpoints:
+                    other_checkpoints = [i.split(&#39;/&#39;)[-1] for i in other_checkpoints]
+                    print(&#39;\n==============================================================================================================&#39;)
+                    print(&#34;NOTE: There are multiple checkpoints present for this language.&#34;)
+                    print(other_checkpoints)
+                    print(&#39;Default checkpoint is currently being used.&#39;)
+                    print(&#39;To use a different checkpoint, use DeepSegment(&#34;en&#34;, checkpoint_name=name_of_the_checkpoint)&#39;)
+                    print(&#39;==============================================================================================================\n&#39;)
+
+            utils_path = os.path.join(lang_path, &#39;utils&#39;)
+            params_path = os.path.join(lang_path, &#39;params&#39;)
+            
+            if not os.path.exists(lang_path):
+                os.mkdir(lang_path)
+
+            if not os.path.exists(checkpoint_path) and not tf_serving:
+                print(&#39;Downloading checkpoint&#39;, model_links[lang_code][&#39;checkpoint&#39;], &#39;to&#39;, checkpoint_path)
+                pydload.dload(url=model_links[lang_code][&#39;checkpoint&#39;], save_to_path=checkpoint_path, max_time=None)
+
+            if not os.path.exists(utils_path):
+                print(&#39;Downloading preprocessing utils&#39;, model_links[lang_code][&#39;utils&#39;], &#39;to&#39;, utils_path)
+                pydload.dload(url=model_links[lang_code][&#39;utils&#39;], save_to_path=utils_path, max_time=None)
+
+            if not os.path.exists(params_path):
+                print(&#39;Downloading model params&#39;, model_links[lang_code][&#39;utils&#39;], &#39;to&#39;, params_path)
+                pydload.dload(url=model_links[lang_code][&#39;params&#39;], save_to_path=params_path, max_time=None)
+
+        if not tf_serving:
+            DeepSegment.seqtag_model = model_from_json(open(params_path).read(), custom_objects={&#39;CRF&#39;: CRF})
+            DeepSegment.seqtag_model.load_weights(checkpoint_path)
+        
+        elif tf_serving:
+            if not is_tfserving_installed:
+                logging.exception(&#34;Tensorflow serving is not installed. Cannot be used with tesnorflow serving docker images.&#34;)
+                logging.exception(&#34;Run pip install tensorflow-serving-api==1.12.0 if you want to use with tf serving.&#34;)
+                exit()
+            DeepSegment.seqtag_model = &#39;deepsegment_&#39; + lang_code
+
+        DeepSegment.data_converter = pickle.load(open(utils_path, &#39;rb&#39;))
+
+    def segment(self, sents):
+        &#34;&#34;&#34;
+        segment a list of sentences or single sentence
+
+        Parameters:
+        sents (list or str): List (or single) of sentences to be segmented.
+
+        Returns:
+        list: Return list or list of lists of segmented sentenes.
+
+        &#34;&#34;&#34;
+        if not DeepSegment.seqtag_model:
+            print(&#39;Please load the model first&#39;)
+
+        string_output = False
+        if not isinstance(sents, list):
+            logging.warn(&#34;Batch input strings for faster inference.&#34;)
+            string_output = True
+            sents = [sents]
+
+        sents = [sent.strip().split() for sent in sents]
+
+        max_len = len(max(sents, key=len))
+        if max_len &gt;= 40:
+            logging.warn(&#34;Consider using segment_long for longer sentences.&#34;)
+
+        encoded_sents = DeepSegment.data_converter.transform(sents)
+        
+        if not isinstance(DeepSegment.seqtag_model, type(&#39;&#39;)):
+            all_tags = DeepSegment.seqtag_model.predict(encoded_sents)
+            all_tags = [np.argmax(_tags, axis=1).tolist() for _tags in all_tags]
+        
+        else:
+            all_tags = get_tf_serving_respone(DeepSegment.seqtag_model, encoded_sents)
+
+        segmented_sentences = [[] for _ in sents]
+        for sent_index, (sent, tags) in enumerate(zip(sents, all_tags)):
+            segmented_sent = []
+            for i, (word, tag) in enumerate(zip(sent, tags)):
+                if tag == 2 and i &gt; 0 and segmented_sent:
+                    segmented_sent = &#39; &#39;.join(segmented_sent)
+                    segmented_sentences[sent_index].append(segmented_sent)
+                    segmented_sent = []
+
+                segmented_sent.append(word)
+            if segmented_sent:
+                segmented_sentences[sent_index].append(&#39; &#39;.join(segmented_sent))
+
+        if string_output:
+            return segmented_sentences[0]
+            
+        return segmented_sentences
+    
+    def segment_long(self, sent, n_window=None):
+        &#34;&#34;&#34;
+        Segment a longer text
+
+        Parameters:
+        sent (str): Input text.
+        n_window (int): window size (words) for iterative segmentation.
+
+        Returns:
+        list: Return list of sentences.
+        &#34;&#34;&#34;
+        if not n_window:
+            logging.warn(&#34;Using default n_window=10. Set this parameter based on your data.&#34;)
+            n_window = 10
+        
+        if isinstance(sent, list):
+            logging.error(&#34;segment_long doesn&#39;t support batching as of now. Batching will be added in a future release.&#34;)
+            return None
+
+        segmented = []
+        sent = sent.split()
+        prefix = []
+        while sent:
+            current_n_window = n_window - len(prefix)
+            if current_n_window &lt;= 0:
+                current_n_window = n_window
+
+            window = prefix + sent[:current_n_window]
+            sent = sent[current_n_window:]
+            segmented_window = self.segment([&#39; &#39;.join(window)])[0]
+            segmented += segmented_window[:-1]
+            prefix = segmented_window[-1].split()
+        
+        if prefix:
+            segmented.append(&#39; &#39;.join(prefix))
+
+        return segmented</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="deepsegment.deepsegment.DeepSegment.data_converter"><code class="name">var <span class="ident">data_converter</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+<dt id="deepsegment.deepsegment.DeepSegment.seqtag_model"><code class="name">var <span class="ident">seqtag_model</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="deepsegment.deepsegment.DeepSegment.segment"><code class="name flex">
+<span>def <span class="ident">segment</span></span>(<span>self, sents)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>segment a list of sentences or single sentence</p>
+<p>Parameters:
+sents (list or str): List (or single) of sentences to be segmented.</p>
+<p>Returns:
+list: Return list or list of lists of segmented sentenes.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def segment(self, sents):
+    &#34;&#34;&#34;
+    segment a list of sentences or single sentence
+
+    Parameters:
+    sents (list or str): List (or single) of sentences to be segmented.
+
+    Returns:
+    list: Return list or list of lists of segmented sentenes.
+
+    &#34;&#34;&#34;
+    if not DeepSegment.seqtag_model:
+        print(&#39;Please load the model first&#39;)
+
+    string_output = False
+    if not isinstance(sents, list):
+        logging.warn(&#34;Batch input strings for faster inference.&#34;)
+        string_output = True
+        sents = [sents]
+
+    sents = [sent.strip().split() for sent in sents]
+
+    max_len = len(max(sents, key=len))
+    if max_len &gt;= 40:
+        logging.warn(&#34;Consider using segment_long for longer sentences.&#34;)
+
+    encoded_sents = DeepSegment.data_converter.transform(sents)
+    
+    if not isinstance(DeepSegment.seqtag_model, type(&#39;&#39;)):
+        all_tags = DeepSegment.seqtag_model.predict(encoded_sents)
+        all_tags = [np.argmax(_tags, axis=1).tolist() for _tags in all_tags]
+    
+    else:
+        all_tags = get_tf_serving_respone(DeepSegment.seqtag_model, encoded_sents)
+
+    segmented_sentences = [[] for _ in sents]
+    for sent_index, (sent, tags) in enumerate(zip(sents, all_tags)):
+        segmented_sent = []
+        for i, (word, tag) in enumerate(zip(sent, tags)):
+            if tag == 2 and i &gt; 0 and segmented_sent:
+                segmented_sent = &#39; &#39;.join(segmented_sent)
+                segmented_sentences[sent_index].append(segmented_sent)
+                segmented_sent = []
+
+            segmented_sent.append(word)
+        if segmented_sent:
+            segmented_sentences[sent_index].append(&#39; &#39;.join(segmented_sent))
+
+    if string_output:
+        return segmented_sentences[0]
+        
+    return segmented_sentences</code></pre>
+</details>
+</dd>
+<dt id="deepsegment.deepsegment.DeepSegment.segment_long"><code class="name flex">
+<span>def <span class="ident">segment_long</span></span>(<span>self, sent, n_window=None)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Segment a longer text</p>
+<p>Parameters:
+sent (str): Input text.
+n_window (int): window size (words) for iterative segmentation.</p>
+<p>Returns:
+list: Return list of sentences.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def segment_long(self, sent, n_window=None):
+    &#34;&#34;&#34;
+    Segment a longer text
+
+    Parameters:
+    sent (str): Input text.
+    n_window (int): window size (words) for iterative segmentation.
+
+    Returns:
+    list: Return list of sentences.
+    &#34;&#34;&#34;
+    if not n_window:
+        logging.warn(&#34;Using default n_window=10. Set this parameter based on your data.&#34;)
+        n_window = 10
+    
+    if isinstance(sent, list):
+        logging.error(&#34;segment_long doesn&#39;t support batching as of now. Batching will be added in a future release.&#34;)
+        return None
+
+    segmented = []
+    sent = sent.split()
+    prefix = []
+    while sent:
+        current_n_window = n_window - len(prefix)
+        if current_n_window &lt;= 0:
+            current_n_window = n_window
+
+        window = prefix + sent[:current_n_window]
+        sent = sent[current_n_window:]
+        segmented_window = self.segment([&#39; &#39;.join(window)])[0]
+        segmented += segmented_window[:-1]
+        prefix = segmented_window[-1].split()
+    
+    if prefix:
+        segmented.append(&#39; &#39;.join(prefix))
+
+    return segmented</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="deepsegment" href="index.html">deepsegment</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="deepsegment.deepsegment.chunk" href="#deepsegment.deepsegment.chunk">chunk</a></code></li>
+<li><code><a title="deepsegment.deepsegment.get_tf_serving_respone" href="#deepsegment.deepsegment.get_tf_serving_respone">get_tf_serving_respone</a></code></li>
+<li><code><a title="deepsegment.deepsegment.predict_response_to_array" href="#deepsegment.deepsegment.predict_response_to_array">predict_response_to_array</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="deepsegment.deepsegment.DeepSegment" href="#deepsegment.deepsegment.DeepSegment">DeepSegment</a></code></h4>
+<ul class="">
+<li><code><a title="deepsegment.deepsegment.DeepSegment.data_converter" href="#deepsegment.deepsegment.DeepSegment.data_converter">data_converter</a></code></li>
+<li><code><a title="deepsegment.deepsegment.DeepSegment.segment" href="#deepsegment.deepsegment.DeepSegment.segment">segment</a></code></li>
+<li><code><a title="deepsegment.deepsegment.DeepSegment.segment_long" href="#deepsegment.deepsegment.DeepSegment.segment_long">segment_long</a></code></li>
+<li><code><a title="deepsegment.deepsegment.DeepSegment.seqtag_model" href="#deepsegment.deepsegment.DeepSegment.seqtag_model">seqtag_model</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.2</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>
