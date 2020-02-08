@@ -10,7 +10,7 @@ weight: 5
 Hi I am **{{ site.author.name }}**,<br>
 I currently work as a Senior NLP Engineer at [DeepAffects](http://www.deepaffects.com/).
 
-*My profiles:* [Sourcerer](https://sourcerer.io/bedapudi6788) | [Linkedin](https://www.linkedin.com/in/bedapudi-praneeth/) | [Medium](https://medium.com/@praneethbedapudi) | [Github](https://github.com/bedapudi6788/) | [GoodReads](https://www.goodreads.com/winchester6788)
+*My profiles:* | [Sourcerer](https://sourcerer.io/bedapudi6788) | [Linkedin](https://www.linkedin.com/in/bedapudi-praneeth/) | [Medium](https://medium.com/@praneethbedapudi) | [Github](https://github.com/bedapudi6788/) | [GoodReads](https://www.goodreads.com/winchester6788)
 
 
 <!-- <div class="row">
