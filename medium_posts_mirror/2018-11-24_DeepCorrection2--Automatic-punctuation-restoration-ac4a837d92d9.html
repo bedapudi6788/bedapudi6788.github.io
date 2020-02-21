@@ -1,0 +1,72 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>DeepCorrection2: Automatic punctuation restoration</title><style>
+      * {
+        font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        font-size: 50px;
+        margin-bottom: 17px;
+        color: #333;
+      }
+      h2 {
+        font-size: 24px;
+        line-height: 1.6;
+        margin: 30px 0 0 0;
+        margin-bottom: 18px;
+        margin-top: 33px;
+        color: #333;
+      }
+      h3 {
+        font-size: 30px;
+        margin: 10px 0 20px 0;
+        color: #333;
+      }
+      header {
+        width: 640px;
+        margin: auto;
+      }
+      section {
+        width: 640px;
+        margin: auto;
+      }
+      section p {
+        margin-bottom: 27px;
+        font-size: 20px;
+        line-height: 1.6;
+        color: #333;
+      }
+      section img {
+        max-width: 640px;
+      }
+      footer {
+        padding: 0 20px;
+        margin: 50px 0;
+        text-align: center;
+        font-size: 12px;
+      }
+      .aspectRatioPlaceholder {
+        max-width: auto !important;
+        max-height: auto !important;
+      }
+      .aspectRatioPlaceholder-fill {
+        padding-bottom: 0 !important;
+      }
+      header,
+      section[data-field=subtitle],
+      section[data-field=description] {
+        display: none;
+      }
+      </style></head><body><article class="h-entry">
+<header>
+<h1 class="p-name">DeepCorrection2: Automatic punctuation restoration</h1>
+</header>
+<section data-field="subtitle" class="p-summary">
+Demo available at http://bpraneeth.com/projects.
+</section>
+<section data-field="body" class="e-content">
+<section name="e7e2" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="802e" id="802e" class="graf graf--h3 graf--leading graf--title">DeepCorrection2: Automatic punctuation restoration</h3><p name="600d" id="600d" class="graf graf--p graf-after--h3"><strong class="markup--strong markup--p-strong">Demo available </strong><a href="http://bpraneeth.com/projects" data-href="http://bpraneeth.com/projects" class="markup--anchor markup--p-anchor" rel="noopener" target="_blank"><strong class="markup--strong markup--p-strong">here</strong></a><strong class="markup--strong markup--p-strong">.</strong></p><p name="5d87" id="5d87" class="graf graf--p graf-after--p">While I was testing the ASR systems <a href="https://github.com/mozilla/DeepSpeech" data-href="https://github.com/mozilla/DeepSpeech" class="markup--anchor markup--p-anchor" rel="noopener" target="_blank"><strong class="markup--strong markup--p-strong">DeepSpeech</strong></a> and <a href="https://github.com/kaldi-asr/kaldi" data-href="https://github.com/kaldi-asr/kaldi" class="markup--anchor markup--p-anchor" rel="noopener" target="_blank"><strong class="markup--strong markup--p-strong">kaldi</strong></a><strong class="markup--strong markup--p-strong"> </strong>as a part of the deep learning team at <a href="http://www.reckonsys.com" data-href="http://www.reckonsys.com" class="markup--anchor markup--p-anchor" rel="noopener" target="_blank"><strong class="markup--strong markup--p-strong">Reckonsys</strong></a><strong class="markup--strong markup--p-strong">, </strong>I realised that neither of them supports auto punctuation. This is of-course expected, since including punctuation symbols while training, will increase the total number of decoding tokens and will result in lower accuracy.</p><p name="883b" id="883b" class="graf graf--p graf-after--p">Although, punctuation isn’t really necessary in most of the use-cases like Sentiment Analysis or NER (punctuation helps, but isn’t essential), it is of utmost importance for transcription services. Imagine sending an email to your client with no punctuation and capitalisation. So, we tested the big guy’s (google) cloud speech api and it indeed offers an Auto Punctuation option. This post covers my initial implementation of auto punctuation implemented in under 7 hours.</p><p name="a3cd" id="a3cd" class="graf graf--p graf-after--p">Just like in my previous post about sentence segmentation, My most important prerequisite was that I needed to implement and test out the entire thing in under a day on the weekend.</p><p name="89b6" id="89b6" class="graf graf--p graf-after--p"><strong class="markup--strong markup--p-strong">The Model:</strong></p><p name="4bf5" id="4bf5" class="graf graf--p graf-after--p">Choosing the model for this project was very simple. Since this is a classic sequence to sequence task, I decided to put together a seq2seq model in Keras. Since, LSTM is the goto for any of the NLP tasks, I decided to go for a seq2seq model with LSTM encoder and decoders. In keras, seq2seq can be implemented very easily, without manually handling encoder states and decoder states. But, the problem with this implementation is that the decoding cannot be customised. So, I decided to manually define and handle encoder and decoder states and the encoding, decoding similar to the simple <a href="https://blog.keras.io/a-ten-minute-introduction-to-sequence-to-sequence-learning-in-keras.html" data-href="https://blog.keras.io/a-ten-minute-introduction-to-sequence-to-sequence-learning-in-keras.html" class="markup--anchor markup--p-anchor" rel="noopener" target="_blank">example seq2seq model</a> by keras team .</p><pre name="aa29" id="aa29" class="graf graf--pre graf-after--p"># Defining the encoder. Max input length is set as 202 for this model</pre><pre name="71cc" id="71cc" class="graf graf--pre graf-after--pre">encoder_input = Input(shape=(max_input_length,))</pre><pre name="244e" id="244e" class="graf graf--pre graf-after--pre"># The text input is encoded into one hot vectors beforehand and the embedding layer is used to create embeddings.</pre><pre name="0efe" id="0efe" class="graf graf--pre graf-after--pre">encoder = Embedding(input_dict_size, 128, input_length=max_input_length, mask_zero=True)(encoder_input)</pre><pre name="8d7e" id="8d7e" class="graf graf--pre graf-after--pre">encoder = Bidirectional(LSTM(128, return_sequences=True, unroll=True), merge_mode=&#39;concat&#39;)(encoder)</pre><pre name="e1bf" id="e1bf" class="graf graf--pre graf-after--pre">encoder_last = encoder[:,-1,:]</pre><pre name="741a" id="741a" class="graf graf--pre graf-after--pre"># Defining the decoder. Max output length is also set as 202<br># Using different encodings for input and output, though not needed in this case.</pre><pre name="ae15" id="ae15" class="graf graf--pre graf-after--pre">decoder_input = Input(shape=(max_output_length,))</pre><pre name="5a32" id="5a32" class="graf graf--pre graf-after--pre">decoder = Embedding(output_dict_size, 256, input_length=max_output_length, mask_zero=True)(decoder_input)</pre><pre name="05a4" id="05a4" class="graf graf--pre graf-after--pre">decoder = LSTM(256, return_sequences=True, unroll=True)(decoder, initial_state=[encoder_last, encoder_last])</pre><p name="baa4" id="baa4" class="graf graf--p graf-after--pre">Although we don’t expect the model to output sentence with perfect punctuation for every input, <strong class="markup--strong markup--p-strong">we expect the model to learn to at least copy the input correctly</strong>. For this particular reason (and other obvious reasons), I decided to add Attention to the model, so that it learns to copy over input easily and will make it easier to deal with lengthier inputs. I went with Luong Attention instead of Bahadanu (the choice won’t affect the final performance by much), the differences between these two implementations are explained excellently <a href="https://github.com/spro/practical-pytorch/blob/master/seq2seq-translation/seq2seq-translation.ipynb" data-href="https://github.com/spro/practical-pytorch/blob/master/seq2seq-translation/seq2seq-translation.ipynb" class="markup--anchor markup--p-anchor" rel="noopener" target="_blank">here</a>.</p><pre name="3eb9" id="3eb9" class="graf graf--pre graf-after--p">attention = dot([decoder, encoder], axes=[2, 2])</pre><pre name="66bf" id="66bf" class="graf graf--pre graf-after--pre">attention = Activation(&#39;softmax&#39;, name=&#39;attention&#39;)(attention)</pre><pre name="f39c" id="f39c" class="graf graf--pre graf-after--pre">context = dot([attention, encoder], axes=[2,1])</pre><pre name="d0ae" id="d0ae" class="graf graf--pre graf-after--pre">decoder_combined_context = concatenate([context, decoder])</pre><p name="cc4f" id="cc4f" class="graf graf--p graf-after--pre"><strong class="markup--strong markup--p-strong">The Data:</strong></p><p name="81fb" id="81fb" class="graf graf--p graf-after--p">For <a href="https://github.com/bedapudi6788/deepsegment" data-href="https://github.com/bedapudi6788/deepsegment" class="markup--anchor markup--p-anchor" rel="noopener" target="_blank">DeepSegment</a>, I collected and cleaned, 1 million sentences from T<a href="https://tatoeba.org" data-href="https://tatoeba.org" class="markup--anchor markup--p-anchor" rel="noopener" target="_blank">atoeba</a>. Since DeepSegment uses GloVe vectors, I was able to get excellent results with just 1 million sentences. Since, I am using a sequence to sequence model with one hot encodings of characters as inputs, the model needs to learn everything from scratch. After downloading and cleaning some corpuses, I had 1448012 sentences, which was enough to train the initial version of this model. Currently, I am working on adding lot more correctly segmented sentences with correct grammar and punctuation to this dataset. I am trying to create and open source a curated dataset of at least 10 million English sentences which I hope will be useful to NLP enthusiasts like me.</p><p name="72f8" id="72f8" class="graf graf--p graf-after--p"><strong class="markup--strong markup--p-strong">The Training:</strong></p><p name="ac64" id="ac64" class="graf graf--p graf-after--p">Since I am using one hot character level encoding with a max length of 200, I wasn’t able to use model.fit, as the entire data cannot be loaded into memory at once. This is where the fit_generator function of Keras came to help and with a mini epoch size of 40000, I was able to start the training on a machine with 8GB memory and an excellent 1080Ti.</p><p name="50f4" id="50f4" class="graf graf--p graf-after--p">The model achieved convergence after 16 epochs at validation accuracy 99.993. Since just the validation accuracy doesn’t tell us much about the actual punctuation correction capability of the model, I employed the following methodology to calculate the performance of model.</p><p name="82ad" id="82ad" class="graf graf--p graf-after--p"><strong class="markup--strong markup--p-strong">Absolute accuracy</strong> is defined as the <strong class="markup--strong markup--p-strong">total number of perfectly corrected sentences/ total number of sentences in the test data</strong>. I tested the model on 3000 sentences which were randomly selected from the original data and were held out during training. The model achieved <strong class="markup--strong markup--p-strong">72.3%</strong> <strong class="markup--strong markup--p-strong">Absolute Accuracy </strong>on this test data. This was far better than what I originally expected considering the ok-ish amount of training data(yay!).</p><p name="cdcc" id="cdcc" class="graf graf--p graf-after--p">The links for the test data, training data, code and the pre-trained models will be available at <a href="https://github.com/bedapudi6788/deeppunct" data-href="https://github.com/bedapudi6788/deeppunct" class="markup--anchor markup--p-anchor" rel="nofollow noopener" target="_blank"><strong class="markup--strong markup--p-strong">https://github.com/bedapudi6788/deeppunct</strong></a><strong class="markup--strong markup--p-strong"> by 26-Nov-2018. </strong>I am currently working on training DeepPunct on lot more data along with some minor changes to the model. I will release the latest code and the data after this is done, on github.</p><p name="0b2d" id="0b2d" class="graf graf--p graf-after--p">Meanwhile, the initial version of the model can be tested at <a href="http://bpraneeth.com/projects" data-href="http://bpraneeth.com/projects" class="markup--anchor markup--p-anchor" rel="nofollow noopener" target="_blank"><strong class="markup--strong markup--p-strong">http://bpraneeth.com/projects</strong></a> along with DeepSegment which was covered in my previous post.</p><figure name="58ed" id="58ed" class="graf graf--figure graf-after--p graf--trailing"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 309px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 44.1%;"></div><img class="graf-image" data-image-id="1*6zxxAj9YhSUbCqRABu09BA.png" data-width="1030" data-height="454" data-is-featured="true" src="https://cdn-images-1.medium.com/max/800/1*6zxxAj9YhSUbCqRABu09BA.png"></div><figcaption class="imageCaption">Example of DeepSegment + DeepPunct pipeline</figcaption></figure></div></div></section>
+</section>
+<footer><p>By <a href="https://medium.com/@praneethbedapudi" class="p-author h-card">Praneeth Bedapudi</a> on <a href="https://medium.com/p/ac4a837d92d9"><time class="dt-published" datetime="2018-11-24T11:09:29.481Z">November 24, 2018</time></a>.</p><p><a href="https://medium.com/@praneethbedapudi/deepcorrection2-automatic-punctuation-restoration-ac4a837d92d9" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on February 21, 2020.</p></footer></article></body></html>

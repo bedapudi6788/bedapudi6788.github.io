@@ -1,0 +1,72 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>DeepSegment 2.0: Multilingual text segmentation with vector alignment</title><style>
+      * {
+        font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+      }
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        font-size: 50px;
+        margin-bottom: 17px;
+        color: #333;
+      }
+      h2 {
+        font-size: 24px;
+        line-height: 1.6;
+        margin: 30px 0 0 0;
+        margin-bottom: 18px;
+        margin-top: 33px;
+        color: #333;
+      }
+      h3 {
+        font-size: 30px;
+        margin: 10px 0 20px 0;
+        color: #333;
+      }
+      header {
+        width: 640px;
+        margin: auto;
+      }
+      section {
+        width: 640px;
+        margin: auto;
+      }
+      section p {
+        margin-bottom: 27px;
+        font-size: 20px;
+        line-height: 1.6;
+        color: #333;
+      }
+      section img {
+        max-width: 640px;
+      }
+      footer {
+        padding: 0 20px;
+        margin: 50px 0;
+        text-align: center;
+        font-size: 12px;
+      }
+      .aspectRatioPlaceholder {
+        max-width: auto !important;
+        max-height: auto !important;
+      }
+      .aspectRatioPlaceholder-fill {
+        padding-bottom: 0 !important;
+      }
+      header,
+      section[data-field=subtitle],
+      section[data-field=description] {
+        display: none;
+      }
+      </style></head><body><article class="h-entry">
+<header>
+<h1 class="p-name">DeepSegment 2.0: Multilingual text segmentation with vector alignment</h1>
+</header>
+<section data-field="subtitle" class="p-summary">
+My first post (https://github.com/bedapudi6788/deepsegment) tackles the problem of sentence segmentation with bad, no punctuation…
+</section>
+<section data-field="body" class="e-content">
+<section name="b8d2" class="section section--body section--first section--last"><div class="section-divider"><hr class="section-divider"></div><div class="section-content"><div class="section-inner sectionLayout--insetColumn"><h3 name="867f" id="867f" class="graf graf--h3 graf--leading graf--title">DeepSegment 2.0: Multilingual text segmentation with vector alignment</h3><p name="92c7" id="92c7" class="graf graf--p graf-after--h3">My <a href="https://medium.com/@praneethbedapudi/deepcorrection-1-sentence-segmentation-of-unpunctuated-text-a1dbc0db4e98" data-href="https://medium.com/@praneethbedapudi/deepcorrection-1-sentence-segmentation-of-unpunctuated-text-a1dbc0db4e98" class="markup--anchor markup--p-anchor" target="_blank">first post</a> (<a href="https://github.com/bedapudi6788/deepsegment" data-href="https://github.com/bedapudi6788/deepsegment" class="markup--anchor markup--p-anchor" rel="nofollow noopener" target="_blank">https://github.com/bedapudi6788/deepsegment</a>) tackles the problem of sentence segmentation with bad, no punctuation. Although the absolute accuracy reported in the post might seem lower, the model itself performs excellently in real world (as explained in the update to the original post).</p><p name="a3ec" id="a3ec" class="graf graf--p graf-after--p">While exploring vector alignment, I realised that for some combinations of languages <strong class="markup--strong markup--p-strong">aligned vectors can be used for building multilingual models</strong>. Before going into the results of the multilingual DeepSegment, I am going to briefly touch upon what vector alignment is and it’s advantages.</p><p name="a849" id="a849" class="graf graf--p graf-after--p">Vector alignment is a very simple but effective concept. When we train some word vector model (eg: FastText, Word2vec, glove) on a corpus the vector representations of the words that we get are representations of semantic similarity of words in that corpus. But, <strong class="markup--strong markup--p-strong">when we train FastText or Glove on two different corpora, the vector representation that we obtain won’t translate.</strong></p><p name="8109" id="8109" class="graf graf--p graf-after--p">Take a look at the image below.</p><figure name="e82e" id="e82e" class="graf graf--figure graf-after--p"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 890px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 127.1%;"></div><img class="graf-image" data-image-id="1*SvAXjLP6AC94i7DqPeGOjw.jpeg" data-width="1000" data-height="1271" data-is-featured="true" src="https://cdn-images-1.medium.com/max/800/1*SvAXjLP6AC94i7DqPeGOjw.jpeg"></div><figcaption class="imageCaption">Red and Blue representations are trained on different corpora</figcaption></figure><p name="5b94" id="5b94" class="graf graf--p graf-after--figure">Since there is no universal ground truth, the word-vector models can’t understand that “apple” in the corpus one is the same as “apple” in corpus 2. To overcome this we need a list of ground truth values stating that “word_1” in corpus_1 is equal to “word_m” in corpus_m. Once we obtain these ground truth values, we rotate and transform the vector spaces to minimise the distance between our ground truth word pairs.</p><p name="efca" id="efca" class="graf graf--p graf-after--p">Note that during vector space alignment, we only rotates and transforms vector spaces. This results in the vectors of word being changes but not their distance. i.e: if d(apple -&gt; orange) = 0.8 before we perform vector alignment it will remain the same after alignment, even though the vectors themselves change.</p><p name="039e" id="039e" class="graf graf--p graf-after--p">A method of vector alignment along with example scripts and ground truth vectors can be found <a href="https://github.com/facebookresearch/MUSE" data-href="https://github.com/facebookresearch/MUSE" class="markup--anchor markup--p-anchor" rel="noopener" target="_blank">here</a>, along with the paper.</p><p name="356f" id="356f" class="graf graf--p graf-after--p"><strong class="markup--strong markup--p-strong">When dealing with multi-lingual models vector alignment is very important</strong> since, all layers will have the same weights for every input. Imagine a layer with weights w1, w2, w3, …, wn. If our inputs are not normalised, the weights (w1 ..) can’t be learned effectively and the model will not converge.</p><p name="1257" id="1257" class="graf graf--p graf-after--p">Now, I train DeepSegment on French, Italian, English with their aligned vectors as initial input to get a single model which can perform sentence segmentation for text from these languages. In my next post, I am going to show how to build <strong class="markup--strong markup--p-strong">zero short named entity recognition</strong> and zero shot text classification and demonstrate that for languages with less data, pre-training with aligned vectors helps.</p><p name="caa4" id="caa4" class="graf graf--p graf-after--p">Similar to DeepSegment v1, I generated one million examples for each of these languages with the label B-sent to mark the beginning of a sentence.</p><p name="9096" id="9096" class="graf graf--p graf-after--p">After 26 epochs, the model converged with validation <strong class="markup--strong markup--p-strong">F1 score (of B-sent label) 95.56</strong>.</p><p name="f147" id="f147" class="graf graf--p graf-after--p">The test results can be seen in the following image</p><figure name="6da1" id="6da1" class="graf graf--figure graf-after--p"><div class="aspectRatioPlaceholder is-locked" style="max-width: 700px; max-height: 104px;"><div class="aspectRatioPlaceholder-fill" style="padding-bottom: 14.899999999999999%;"></div><img class="graf-image" data-image-id="1*Iww5ZlIGrr9JZZyZF0q2sw.png" data-width="711" data-height="106" src="https://cdn-images-1.medium.com/max/800/1*Iww5ZlIGrr9JZZyZF0q2sw.png"></div><figcaption class="imageCaption">F1 scores of B-sent label</figcaption></figure><p name="9c68" id="9c68" class="graf graf--p graf-after--figure">Although, the score for the single language model are slightly higher, the difference is minuscule and the multi-lingual model performs excellently for all the three languages. In future iterations, I intend to make DeepSegment available for most of the major and not so major languages along with DeepPunct.</p><p name="9280" id="9280" class="graf graf--p graf-after--p">The <strong class="markup--strong markup--p-strong">pre-trained model can be downloaded from </strong><a href="https://github.com/bedapudi6788/DeepSegment-Models" data-href="https://github.com/bedapudi6788/DeepSegment-Models" class="markup--anchor markup--p-anchor" rel="noopener" target="_blank"><strong class="markup--strong markup--p-strong">here</strong></a>. Alternatively, just install latest version of DeepSegment (will be released by Feb 05) and use the inbuilt download function.</p><pre name="f4e3" id="f4e3" class="graf graf--pre graf-after--p">pip install --upgrade deepsegment</pre><pre name="135e" id="135e" class="graf graf--pre graf-after--pre graf--trailing">import deepsegment<br>deepsegment.download(&#39;eng_fra_ita&#39;)</pre></div></div></section>
+</section>
+<footer><p>By <a href="https://medium.com/@praneethbedapudi" class="p-author h-card">Praneeth Bedapudi</a> on <a href="https://medium.com/p/fd76ce62194f"><time class="dt-published" datetime="2019-02-03T15:02:18.722Z">February 3, 2019</time></a>.</p><p><a href="https://medium.com/@praneethbedapudi/deepsegment-2-0-multilingual-text-segmentation-with-vector-alignment-fd76ce62194f" class="p-canonical">Canonical link</a></p><p>Exported from <a href="https://medium.com">Medium</a> on February 21, 2020.</p></footer></article></body></html>
