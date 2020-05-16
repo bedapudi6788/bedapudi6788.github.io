@@ -1,6 +1,6 @@
 ---
 name: DeepPunct
-tools: [Demo-inside, Keras, LSTM, Python, Attention]
+tools: [Keras, LSTM, Python, Attention]
 image: /images/deeppunct_example.png
 description: Designed with ASR outputs in mind, DeepPunct uses LSTM encoder and decoders with Luong attention for automatic punctuation restoration.
 ---
@@ -67,7 +67,7 @@ description: Designed with ASR outputs in mind, DeepPunct uses LSTM encoder and 
   }
 </style>
 
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
   function parseQuery(e) {
     query = $('#queryInput').val();
@@ -103,13 +103,13 @@ window.onload = function() {
     $('#loader').hide();
 };
 
-</script>
+</script> -->
 
-<input type="text" class="form-control" id="queryInput" placeholder="DeepSegment + DeepPunct demo. Input limit: 600 characters.">
+<!-- <input type="text" class="form-control" id="queryInput" placeholder="DeepSegment + DeepPunct demo. Input limit: 600 characters.">
 <div id="loader"></div>
 
 <button class="btn btn-primary" type="button" onclick="parseQuery()">Submit</button>
-<div class="col-sm-12"> <pre id='resultJSON'></pre> </div>
+<div class="col-sm-12"> <pre id='resultJSON'></pre> </div> -->
 
 
 
