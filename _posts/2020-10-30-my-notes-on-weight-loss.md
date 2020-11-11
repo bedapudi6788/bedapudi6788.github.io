@@ -1,5 +1,5 @@
 ---
-title: 107 to 70: My notes on weight loss.
+title: My notes on weight loss.
 tags: [Personal Update, Weight Loss, OMAD, ADF]
 style: fill
 color: success
